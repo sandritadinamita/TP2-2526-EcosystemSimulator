@@ -12,7 +12,12 @@ public abstract class Animal implements Entity, AnimalInfo{
     protected double speed;
     protected double age;
     protected double desire;
-    
+    protected double sightRange;
+    protected Animal mateTarget;
+    protected Animal baby;
+    protected AnimalMapView regionMngr;
+    protected SelectionStrategy mateStrategy;
+
 
 
 }
