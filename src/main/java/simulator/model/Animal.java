@@ -2,6 +2,7 @@ package simulator.model;
 
 import org.json.JSONObject;
 
+import simulator.misc.Utils;
 import simulator.misc.Vector2D;
 
 public abstract class Animal implements Entity, AnimalInfo{
@@ -28,8 +29,8 @@ public abstract class Animal implements Entity, AnimalInfo{
         this.mateStrategy = mateStrategy;
         this.speed = Utils.getRandomizedParameter(initSpeed, 0.1);
         this.state = State.NORMAL;
-        this.energy = constantes.INIT_ENERGY; //crear constantes?
-        this.desire = constantes.DESIRE_INIT
+        this.energy = Constantes.INIT_ENERGY; //crear constantes?
+        this.desire = Constantes.DESIRE_INIT;
         this.dest = null;
         this.mateTarget = null;
         this.baby = null;
@@ -43,7 +44,7 @@ public abstract class Animal implements Entity, AnimalInfo{
         this.mateTarget = null;
         this.regionMngr = null;
         this.state = State.NORMAL;
-        this.desire = constantes.DESIRE_INIT;
+        this.desire = Constantes.DESIRE_INIT;
         this.geneticCode = p1.geneticCode;
         this.diet = p1.diet;
         this.mateStrategy = p2.mateStrategy;
@@ -63,13 +64,14 @@ public abstract class Animal implements Entity, AnimalInfo{
             this.pos = new Vector2D(x, y);
         }
         else {
-            Ajustar_posiciones(this.pos);
+            ajustarPosicionDentroMapa(this.pos);
         }
         double dest_x = Utils.RAND.nextDouble() * (regionMngr.getWidth() - 1);
         double dest_y = Utils.RAND.nextDouble() * (regionMngr.getHeight() - 1);
         this.dest = new Vector2D(dest_x, dest_y);
     }
-    void Ajustar_posicinoes(Vector2D pos){
+
+    void ajustarPosicionDentroMapa(Vector2D pos){
         double x = pos.getX();
         double y = pos.getY();
         double width = regionMngr.getWidth();
@@ -78,7 +80,6 @@ public abstract class Animal implements Entity, AnimalInfo{
         while (x < 0) x = (x + width);
         while (y >= height) y = (y - height);
         while (y < 0) y = (y + height);
-
     }
 
     Animal deliverBaby(){
@@ -111,7 +112,7 @@ public abstract class Animal implements Entity, AnimalInfo{
         }
     }
 
-    abstract protected void setNormalStateAction()
+    abstract protected void setNormalStateAction();
     abstract protected void setMateStateAction();
     abstract protected void setHungerStateAction();
     abstract protected void setDangerStateAction();

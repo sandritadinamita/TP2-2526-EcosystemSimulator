@@ -10,7 +10,7 @@ public class Sheep extends Animal{
     public Sheep(SelectionStrategy mateStrategy, SelectionStrategy dangerStrategy,  Vector2D pos){
         super(Constantes.SHEEP_GENETIC_CODE,Diet.HERBIVORE , Constantes.INIT_SIGHT_SHEEP, Constantes.INIT_SPEED_SHEEP,mateStrategy, pos) 
         this.dangerStrategy = dangerStrategy;
-        }
+    }
 
     protected Sheep(Sheep p1, Animal p2){
         super(p1, p2);
@@ -23,9 +23,22 @@ public class Sheep extends Animal{
         if(this.state == State.DEAD){
             return;
         }
-        //Actualizar el objeto según el estado del animal (ver la descripción abajo).
+        switch(this.state){
+            case NORMAL:
+                updateNormal();
+                break;
+            case DANGER:
+                updateDanger();
+                break;
+            case MATE:
+                updateMate();
+                break;
+            default:
+                break;
+        }        
         if(){
-            //Si la posición está fuera del mapa, ajustarla y cambiar su estado a NORMAL.
+            //Si la posición está fuera del mapa
+            ajustarPosicionDentroMapa(this.pos);
             this.state = State.NORMAL;
         }
         if(this.energy == Constantes.ENERGY_DEAD || this.age > Constantes.MAX_AGE_SHEEP){
@@ -37,6 +50,25 @@ public class Sheep extends Animal{
                 this.energy = newEnergy;
             }
         }
+    }
+
+
+
+    void updateNormal(){
+        if(this.dest.distanceTo(this.pos) < Constantes.COLLISION_RANGE){
+
+        }
+        else{
+
+        }
+    }
+
+    void updateDanger(){
+
+    }
+
+    void updateMate(){
+
     }
 
     @Override

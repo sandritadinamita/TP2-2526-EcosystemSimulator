@@ -1,7 +1,5 @@
 package simulator.model;
 
-
-
 public class Constantes {
     //clase Animal
     final static double INIT_ENERGY = 100.0;
@@ -41,9 +39,9 @@ public class Constantes {
     final static double DESIRE_INCREASE_RATE_WOLF = 30.0;
     final static double PREGNANT_PROBABILITY_WOLF = 0.75;
     //default region 
-    final static double FOOD_EAT_RATE_HERBS = 60.0;
-    final static double FOOD_SHORTAGE_TH_HERBS = 5.0;
-    final static double FOOD_SHORTAGE_EXP_HERBS = 2.0;
+    final static double FOOD_EAT_RATE_HERB = 60.0;
+    final static double FOOD_SHORTAGE_TH_HERB = 5.0;
+    final static double FOOD_SHORTAGE_EXP_HERB = 2.0;
     //dynamic region 
     final static double FOOD_EAT_RATE_HERBS = 60.0;
     final static double FOOD_SHORTAGE_TH_HERBS = 5.0;
