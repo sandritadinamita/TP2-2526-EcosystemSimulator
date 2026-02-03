@@ -8,9 +8,8 @@ public class Sheep extends Animal{
     private SelectionStrategy dangerStrategy;
 
     public Sheep(SelectionStrategy mateStrategy, SelectionStrategy dangerStrategy,  Vector2D pos){
-        super() //recibe las estrategias y la posición y las almacena en los atributos correspondientes (llamando a la constructora de la superclase). 
-        this.sightRange = Constantes.INIT_SIGHT_SHEEP; // poner constantes ?
-        this.speed = Constantes.INIT_SPEED_SHEEP
+        super(Constantes.SHEEP_GENETIC_CODE,Diet.HERBIVORE , Constantes.INIT_SIGHT_SHEEP, Constantes.INIT_SPEED_SHEEP,mateStrategy, pos) 
+        this.dangerStrategy = dangerStrategy;
         }
 
     protected Sheep(Sheep p1, Animal p2){
@@ -34,7 +33,7 @@ public class Sheep extends Animal{
         }
         if(this.state != State.DEAD){ //not sure
             double newEnergy = this.energy + getFood(this, dt);
-            if(newEnergy < Constantes.MAX_ENERGY && newEnergy > Constantes.ENERGY_DEAD{
+            if(newEnergy < Constantes.MAX_ENERGY && newEnergy > Constantes.ENERGY_DEAD){
                 this.energy = newEnergy;
             }
         }
