@@ -9,8 +9,8 @@ public class Wolf extends Animal{
 
     public Wolf(SelectionStrategy mateStrategy, SelectionStrategy huntingStrategy,  Vector2D pos){
         //recibe las estrategias y la posición y simplemente le almacena en los atributos correspondientes (llamando a la constructora de la superclase). 
-        this.sightRange = 50.0;
-        this.speed = 60.0;
+        this.sightRange = Constantes.INIT_SIGHT_WOLF;
+        this.speed = Constantes.INIT_SPEED_WOLF;
     }
 
     protected Wolf(Wolf p1, Animal p2){

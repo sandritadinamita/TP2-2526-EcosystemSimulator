@@ -28,8 +28,8 @@ public abstract class Animal implements Entity, AnimalInfo{
         this.mateStrategy = mateStrategy;
         this.speed = Utils.getRandomizedParameter(initSpeed, 0.1);
         this.state = State.NORMAL;
-        this.energy = 100.0; //crear constantes?
-        this.desire = 0.0;
+        this.energy = constantes.INIT_ENERGY; //crear constantes?
+        this.desire = constantes.DESIRE_INIT
         this.dest = null;
         this.mateTarget = null;
         this.baby = null;
@@ -43,7 +43,7 @@ public abstract class Animal implements Entity, AnimalInfo{
         this.mateTarget = null;
         this.regionMngr = null;
         this.state = State.NORMAL;
-        this.desire = 0.0;
+        this.desire = constantes.DESIRE_INIT;
         this.geneticCode = p1.geneticCode;
         this.diet = p1.diet;
         this.mateStrategy = p2.mateStrategy;
