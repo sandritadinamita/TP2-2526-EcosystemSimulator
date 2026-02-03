@@ -8,7 +8,7 @@ public class Wolf extends Animal{
     private SelectionStrategy huntingStrategy;
 
     public Wolf(SelectionStrategy mateStrategy, SelectionStrategy huntingStrategy,  Vector2D pos){
-        super(Constantes.WOLF_GENETIC_CODE, Diet.CARNIVORE, Constantes.INIT_SIGHT_WOLF , Constantes.INIT_SPEED_WOLF, mateStrategy,pos)
+        super(Constantes.WOLF_GENETIC_CODE, Diet.CARNIVORE, Constantes.INIT_SIGHT_WOLF , Constantes.INIT_SPEED_WOLF, mateStrategy,pos);
         this.huntingStrategy = huntingStrategy;
     }
 
@@ -103,8 +103,8 @@ public class Wolf extends Animal{
 
     @Override
     protected void setHungerStateAction() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setHungerStateAction'");
+        mateTarget = null;
+        //comprobar
     }
 
     @Override
@@ -118,5 +118,6 @@ public class Wolf extends Animal{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setDeadStateAction'");
     }
+    
 
 }

@@ -57,6 +57,28 @@ public abstract class Animal implements Entity, AnimalInfo{
         this.regionMngr = regMngr;
         //si pos es null hay que elegir una posición aleatoria dentro del rango del mapa (X entre 0 y regionMngr.getWidth()-1 e Y entre 0 y regionMngr.getHeight()-1). Si pos no es null hay que ajustarlo para que esté dentro del mapa si es necesario (ver el apartado Ajustar posiciones).
         //Elegir una posición aleatoria para dest (dentro del rango del mapa).
+        if (pos == null){
+            double x = Utils.RAND.nextDouble() * (regionMngr.getWidth() - 1);
+            double y = Utils.RAND.nextDouble() * (regionMngr.getHeight() - 1);
+            this.pos = new Vector2D(x, y);
+        }
+        else {
+            Ajustar_posiciones(this.pos);
+        }
+        double dest_x = Utils.RAND.nextDouble() * (regionMngr.getWidth() - 1);
+        double dest_y = Utils.RAND.nextDouble() * (regionMngr.getHeight() - 1);
+        this.dest = new Vector2D(dest_x, dest_y);
+    }
+    void Ajustar_posicinoes(Vector2D pos){
+        double x = pos.getX();
+        double y = pos.getY();
+        double width = regionMngr.getWidth();
+        double height = regionMngr.getHeight();
+        while (x >= width) x = (x - width);
+        while (x < 0) x = (x + width);
+        while (y >= height) y = (y - height);
+        while (y < 0) y = (y + height);
+
     }
 
     Animal deliverBaby(){
@@ -89,7 +111,7 @@ public abstract class Animal implements Entity, AnimalInfo{
         }
     }
 
-    abstract protected void setNormalStateAction();
+    abstract protected void setNormalStateAction()
     abstract protected void setMateStateAction();
     abstract protected void setHungerStateAction();
     abstract protected void setDangerStateAction();

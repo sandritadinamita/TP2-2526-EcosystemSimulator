@@ -91,32 +91,33 @@ public class Sheep extends Animal{
 
     @Override
     protected void setNormalStateAction() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setNormalStateAction'");
+        mateTarget = null; 
+        dangerSource = null;
+        //comprobar  
     }
 
     @Override
     protected void setMateStateAction() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setMateStateAction'");
+        dangerSource = null;
+        //comprobar
     }
 
     @Override
     protected void setHungerStateAction() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setHungerStateAction'");
+       //comprobar
     }
 
     @Override
     protected void setDangerStateAction() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setDangerStateAction'");
+        mateTarget = null;
+       //comprobar
     }
+
 
     @Override
     protected void setDeadStateAction() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setDeadStateAction'");
+        mateTarget = null;
+        dangerSource = null;
     }
 
 }
