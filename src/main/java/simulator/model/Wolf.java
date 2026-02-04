@@ -85,8 +85,12 @@ public class Wolf extends Animal{
 
     @Override
     public boolean isPregnant() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isPregnant'");
+        if(this.baby == null){
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
     @Override

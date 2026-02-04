@@ -25,13 +25,13 @@ public class Sheep extends Animal{
         }
         switch(this.state){
             case NORMAL:
-                updateNormal();
+                updateNormal(dt);
                 break;
             case DANGER:
-                updateDanger();
+                updateDanger(dt);
                 break;
             case MATE:
-                updateMate();
+                updateMate(dt);
                 break;
             default:
                 break;
@@ -52,23 +52,86 @@ public class Sheep extends Animal{
         }
     }
 
-
-
-    void updateNormal(){
+    void avanza(double dt){
         if(this.dest.distanceTo(this.pos) < Constantes.COLLISION_RANGE){
+            this.dest = ;//nuevo destino random
+        }
+        move(speed*dt*Math.exp((energy-100.0)*0.007));
+        this.age = age + dt;
+        this.energy = energy - 20.0*dt; // manteniéndolo siempre entre 0.0 y 100.0
+        this.desire = desire + 40.0*dt; // manteniéndolo siempre entre 0.0 y 100.0
+    }
 
+
+
+    void updateNormal(double dt){
+        avanza(dt);
+        if(this.dangerSource == null){
+            //buscar nuevo animal peligroso;
+            if(this.desire > Constantes.DESIRE_THRESHOLD_SHEEP){
+                this.state = State.MATE;
+            }
         }
         else{
-
+            this.state = State.DANGER;
         }
     }
 
-    void updateDanger(){
-
+    void updateDanger(double dt){
+        if(this.dangerSource == null){
+            avanza(dt);
+        }
+        else if(this.dangerSource != null){
+            this.dest = pos.plus(pos.minus(dangerSource.getPosition()).direction());
+            move(2.0*speed*dt*Math.exp((energy-100.0)*0.007));
+            this.age = age + dt;
+            this.energy = energy - 20.0*1.2*dt; // manteniéndolo siempre entre 0.0 y 100.0
+            this.desire = desire + 40.0*dt; // manteniéndolo siempre entre 0.0 y 100.0
+            if(this.state == State.DEAD){
+                this.dangerSource = null;
+            }
+        }
+        else if(this.dangerSource == null || dangerSource no esta en el campo visual){
+            //buscar un nuevo animal que se considere como peligro.
+            if(this.dangerSource == null && this.desire > Constantes.DESIRE_THRESHOLD_SHEEP){
+                this.state = State.MATE;
+            }
+        }
     }
 
-    void updateMate(){
-
+    void updateMate(double dt){
+        if(this.mateTarget != null && (this.state == State.DEAD || fuera del campo visual)){
+            this.mateTarget = null;
+        }
+        else if(this.mateTarget == null){
+            //buscar un animal para emparejarse y si no se encuentra uno avanza normalmente como el punto 1 del caso NORMAL arriba
+            avanza(dt);
+        }
+        else if(this.mateTarget != null){
+            this.dest = mateTarget.getPosition();
+            move(2.0*speed*dt*Math.exp((energy-100.0)*0.007));
+            this.age = age + dt;
+            this.energy = energy - 20.0*1.2*dt; //manteniéndola siempre entre 0.0 y 100.0
+            this.desire = desire + 40.0*dt; //manteniéndola siempre 0-100
+            if(this.mateTarget.getPosition().distanceTo(this.pos) < Constantes.COLLISION_RANGE){
+                this.desire = Constantes.DESIRE_INIT;
+                this.mateTarget.desire = Constantes.DESIRE_INIT; //deberiamos hacer un setdesire?
+                if(!this.isPregnant()){
+                    //con probabilidad de 0.9 va a llevar a un nuevo bebé usando 
+                    this.baby = new Sheep(this, mateTarget);
+                }
+                this.mateTarget = null;
+            }
+        }
+        if(this.dangerSource == null){
+            //buscar un nuevo animal que se considere como peligroso.
+            if(this.desire < Constantes.DESIRE_THRESHOLD_SHEEP){
+                this.state = State.NORMAL;
+            }
+        }
+        else{
+            this.state = State.DANGER;
+        }
     }
 
     @Override
@@ -118,7 +181,12 @@ public class Sheep extends Animal{
 
     @Override
     public boolean isPregnant() {
-        return this.;
+        if(this.baby == null){
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
     @Override
