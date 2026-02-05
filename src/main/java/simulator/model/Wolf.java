@@ -1,5 +1,6 @@
 package simulator.model;
 
+import simulator.misc.Utils;
 import simulator.misc.Vector2D;
 
 public class Wolf extends Animal{
@@ -23,6 +24,19 @@ public class Wolf extends Animal{
             return;
         }
         //Actualizar el objeto según el estado del animal (ver la descripción abajo).
+        switch(this.state){
+            case NORMAL:
+                updateNormal(dt);
+                break;
+            case DANGER:
+                updateHunger(dt);
+                break;
+            case MATE:
+                updateMate(dt);
+                break;
+            default:
+                break;
+        }
         if(){
             //Si la posición está fuera del mapa, ajustarla y cambiar su estado a NORMAL.
             this.state = State.NORMAL;
@@ -37,7 +51,69 @@ public class Wolf extends Animal{
             }
         }
     }
+    void avanza(double dt){
+        if(this.dest.distanceTo(this.pos) < Constantes.COLLISION_RANGE){
+            double dest_x = Utils.RAND.nextDouble() * (regionMngr.getWidth() - 1);
+            double dest_y = Utils.RAND.nextDouble() * (regionMngr.getHeight() - 1);
+            this.dest = new Vector2D(dest_x, dest_y);
+        }
+        move(speed*dt*Math.exp((energy-Constantes.MAX_ENERGY)*Constantes.HUNGER_DECAY_EXP_FACTOR));
+        this.age = age + dt;
+        this.energy = energy - (Constantes.FOOD_DROP_RATE_WOLF*dt);//mantenerlo entre 0.0 y 100.0
+        this.desire = desire + (Constantes.DESIRE_INCREASE_RATE_WOLF*dt);// mantener entre 0.0 y 100.0
+    }
 
+    void updateNormal(double dt){
+        //1
+        avanza(dt);
+        //2
+        if(this.energy < Constantes.FOOD_THRSHOLD_WOLF){
+            this.state = State.HUNGER;
+        }
+        else {
+            if(this.desire > Constantes.DESIRE_THRESHOLD_WOLF){
+                this.state = State.MATE;
+            }
+        }
+    }
+
+    
+    void updateHunger(double dt){
+        //1
+        if(this.huntTarget == null||this.huntTarget.getState() == State.DEAD){ 
+            // falta poner o esta fuera del campo visual
+
+        } 
+        //2
+        if(this.huntTarget == null){
+            avanza(dt);
+        }
+        else {
+            this.dest = huntTarget.getPosition();
+            move(Constantes.BOOST_FACTOR_WOLF*speed*dt*Math.exp((energy-Constantes.MAX_ENERGY)*Constantes.HUNGER_DECAY_EXP_FACTOR));
+            this.age = age + dt;
+            this.energy = energy - (Constantes.FOOD_DROP_RATE_WOLF*Constantes.FOOD_DROP_BOOST_FACTOR_WOLF*dt);//mantenerlo entre 0.0 y 100.0
+            this.desire = desire + (Constantes.DESIRE_INCREASE_RATE_WOLF*dt);// mantener entre 0.0 y 100.0
+            if(this.getPosition().distanceTo(this.huntTarget.getPosition())< Constantes.COLLISION_RANGE){
+                this.huntTarget.state = State.DEAD;
+                this.huntTarget = null;
+                this.energy = energy + Constantes.FOOD_EAT_VALUE_WOLF; //mantenerlo entre 0.0 y 100.0
+            }
+        }
+        //3
+        if(this.energy > Constantes.FOOD_THRSHOLD_WOLF){
+            if(this.desire < Constantes.DESIRE_THRESHOLD_WOLF){
+                this.state = State.NORMAL;
+            }
+            else{
+                this.state = State.MATE;
+            }
+        }
+    }
+
+    void updateMate(double dt){
+        
+    }
         @Override
     public State getState() {
         return this.state;
