@@ -1,5 +1,7 @@
 package simulator.model;
 
+
+
 public class Constantes {
     //clase Animal
     final static double INIT_ENERGY = 100.0;
