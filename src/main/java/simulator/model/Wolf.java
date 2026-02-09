@@ -45,7 +45,7 @@ public class Wolf extends Animal{
             this.state = State.DEAD;
         }
         if(this.state != State.DEAD){ //not sure
-            double newEnergy = this.energy + getFood(this, dt);
+            double newEnergy = this.energy + getfood(this, dt);
             if(newEnergy < 100.0 && newEnergy > 0){
                 this.energy = newEnergy;
             }
