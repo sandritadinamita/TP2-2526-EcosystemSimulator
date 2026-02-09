@@ -11,6 +11,7 @@ public class Constantes {
     final static double HUNGER_DECAY_EXP_FACTOR = 0.007;
     final static double MAX_ENERGY = 100.0;
     final static double MAX_DESIRE = 100.0;
+    final static double MIN_DESIRE_ENERGY = 0.0;
     final static double DESIRE_INIT = 0.0;
 
     //clase Sheep

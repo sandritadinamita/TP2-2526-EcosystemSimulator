@@ -59,8 +59,8 @@ public class Wolf extends Animal{
         }
         move(speed*dt*Math.exp((energy-Constantes.MAX_ENERGY)*Constantes.HUNGER_DECAY_EXP_FACTOR));
         this.age = age + dt;
-        this.energy = energy - (Constantes.FOOD_DROP_RATE_WOLF*dt);//mantenerlo entre 0.0 y 100.0
-        this.desire = desire + (Constantes.DESIRE_INCREASE_RATE_WOLF*dt);// mantener entre 0.0 y 100.0
+        this.energy = Utils.constrainValueInRange(energy + Constantes.FOOD_DROP_RATE_WOLF*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY);
+        this.desire = Utils.constrainValueInRange(desire + Constantes.DESIRE_INCREASE_RATE_WOLF*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY);
     }
 
     void updateNormal(double dt){
@@ -69,10 +69,12 @@ public class Wolf extends Animal{
         //2
         if(this.energy < Constantes.FOOD_THRSHOLD_WOLF){
             this.state = State.HUNGER;
+            this.mateTarget = null;
         }
         else {
             if(this.desire > Constantes.DESIRE_THRESHOLD_WOLF){
                 this.state = State.MATE;
+                this.huntTarget = null;
             }
         }
     }
@@ -92,21 +94,24 @@ public class Wolf extends Animal{
             this.dest = huntTarget.getPosition();
             move(Constantes.BOOST_FACTOR_WOLF*speed*dt*Math.exp((energy-Constantes.MAX_ENERGY)*Constantes.HUNGER_DECAY_EXP_FACTOR));
             this.age = age + dt;
-            this.energy = energy - (Constantes.FOOD_DROP_RATE_WOLF*Constantes.FOOD_DROP_BOOST_FACTOR_WOLF*dt);//mantenerlo entre 0.0 y 100.0
-            this.desire = desire + (Constantes.DESIRE_INCREASE_RATE_WOLF*dt);// mantener entre 0.0 y 100.0
+            this.energy = Utils.constrainValueInRange(energy + Constantes.FOOD_DROP_RATE_WOLF*Constantes.FOOD_DROP_BOOST_FACTOR_WOLF*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY);
+            this.desire = Utils.constrainValueInRange(desire + Constantes.DESIRE_INCREASE_RATE_WOLF*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_DESIRE);
             if(this.getPosition().distanceTo(this.huntTarget.getPosition())< Constantes.COLLISION_RANGE){
                 this.huntTarget.state = State.DEAD;
                 this.huntTarget = null;
-                this.energy = energy + Constantes.FOOD_EAT_VALUE_WOLF; //mantenerlo entre 0.0 y 100.0
+                this.energy = Utils.constrainValueInRange(energy + Constantes.FOOD_EAT_VALUE_WOLF, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY); 
             }
         }
         //3
         if(this.energy > Constantes.FOOD_THRSHOLD_WOLF){
             if(this.desire < Constantes.DESIRE_THRESHOLD_WOLF){
                 this.state = State.NORMAL;
+                this.huntTarget = null;
+                this.mateTarget = null;
             }
             else{
                 this.state = State.MATE;
+                this.huntTarget = null;
             }
         }
     }
@@ -126,14 +131,16 @@ public class Wolf extends Animal{
             this.dest = mateTarget.getPosition();
             move(speed*dt*Math.exp((energy-Constantes.MAX_ENERGY)*Constantes.HUNGER_DECAY_EXP_FACTOR));
             this.age = age + dt;
-            this.energy = energy - (Constantes.FOOD_DROP_RATE_WOLF*Constantes.FOOD_DROP_BOOST_FACTOR_WOLF*dt);//mantenerlo entre 0.0 y 100.0
+            this.energy = energy -//mantenerlo entre 0.0 y 100.0
             this.desire = desire + (Constantes.DESIRE_INCREASE_RATE_WOLF*dt);// mantener entre 0.0 y 100.0
             if(this.getPosition().distanceTo(this.mateTarget.getPosition())< Constantes.COLLISION_RANGE){
                 this.desire = 0.0;
                 this.mateTarget.desire = 0.0;
-                if(/*no lleva bebe)*/){
+                if(!(this.isPregnant() || this.mateTarget.isPregnant())){//esto ns si esta bien 
+                //con probabilidad 0,9
                 this.baby = new Wolf(this, mateTarget);
-                this.mateTarget.baby = this.baby;}
+                this.mateTarget.baby = this.baby;
+            }
 
                 this.energy = this.energy - Constantes.FOOD_DROP_DESIRE_WOLF; //mantenerlo entre 0.0 y 100.0
                 ///ns si lo de la ebergia hay q hacerlo al mate target tambien
@@ -143,11 +150,14 @@ public class Wolf extends Animal{
         //3
         if(this.energy < Constantes.FOOD_THRSHOLD_WOLF){
             this.state = State.HUNGER;
+            this.mateTarget = null;
         }
         else {
             if(this.desire < Constantes.DESIRE_THRESHOLD_WOLF){
                 this.state = State.NORMAL;
-            }
+                this.mateTarget = null;
+                this.huntTarget = null;
+          }
         }
     }
         
