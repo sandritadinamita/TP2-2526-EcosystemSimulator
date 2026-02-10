@@ -40,7 +40,7 @@ public class Constantes {
     final static double FOOD_EAT_VALUE_WOLF = 50.0;
     final static double DESIRE_THRESHOLD_WOLF = 65.0;
     final static double DESIRE_INCREASE_RATE_WOLF = 30.0;
-    final static double PREGNANT_PROBABILITY_WOLF = 0.9;
+    final static double PREGNANT_PROBABILITY_WOLF = 0.75;
     //default region 
     final static double FOOD_EAT_RATE_HERB = 60.0;
     final static double FOOD_SHORTAGE_TH_HERB = 5.0;
