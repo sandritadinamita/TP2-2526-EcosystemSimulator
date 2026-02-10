@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import simulator.factories.Factory;
+
 public class Simulator implements JSONable {
     private double tiempo;
     public Simulator(int cols, int rows, int width, int height,
@@ -12,10 +14,10 @@ public class Simulator implements JSONable {
 
     }
 
-    private setRegion(int row, int col, Region r){
+    private void setRegion(int row, int col, Region r){
 
     }
-    void setRegion(int row, int col, JSONObject rJson){
+    private void setRegion(int row, int col, JSONObject rJson){
 
     }
     private void addAnimal(Animal a){

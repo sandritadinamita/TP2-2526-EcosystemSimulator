@@ -8,7 +8,7 @@ public class Sheep extends Animal{
     private SelectionStrategy dangerStrategy;
 
     public Sheep(SelectionStrategy mateStrategy, SelectionStrategy dangerStrategy,  Vector2D pos){
-        super(Constantes.SHEEP_GENETIC_CODE,Diet.HERBIVORE , Constantes.INIT_SIGHT_SHEEP, Constantes.INIT_SPEED_SHEEP,mateStrategy, pos) 
+        super(Constantes.SHEEP_GENETIC_CODE, Diet.HERBIVORE, Constantes.INIT_SIGHT_SHEEP, Constantes.INIT_SPEED_SHEEP, mateStrategy, pos); 
         this.dangerStrategy = dangerStrategy;
     }
 

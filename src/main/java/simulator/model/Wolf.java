@@ -9,7 +9,7 @@ public class Wolf extends Animal{
     private SelectionStrategy huntingStrategy;
 
     public Wolf(SelectionStrategy mateStrategy, SelectionStrategy huntingStrategy,  Vector2D pos){
-        super(Constantes.WOLF_GENETIC_CODE, Diet.CARNIVORE, Constantes.INIT_SIGHT_WOLF , Constantes.INIT_SPEED_WOLF, mateStrategy,pos);
+        super(Constantes.WOLF_GENETIC_CODE, Diet.CARNIVORE, Constantes.INIT_SIGHT_WOLF, Constantes.INIT_SPEED_WOLF, mateStrategy, pos);
         this.huntingStrategy = huntingStrategy;
     }
 
@@ -131,7 +131,7 @@ public class Wolf extends Animal{
             this.dest = mateTarget.getPosition();
             move(speed*dt*Math.exp((energy-Constantes.MAX_ENERGY)*Constantes.HUNGER_DECAY_EXP_FACTOR));
             this.age = age + dt;
-            this.energy = energy -//mantenerlo entre 0.0 y 100.0
+            this.energy = energy -;//mantenerlo entre 0.0 y 100.0
             this.desire = desire + (Constantes.DESIRE_INCREASE_RATE_WOLF*dt);// mantener entre 0.0 y 100.0
             if(this.getPosition().distanceTo(this.mateTarget.getPosition())< Constantes.COLLISION_RANGE){
                 this.desire = 0.0;
