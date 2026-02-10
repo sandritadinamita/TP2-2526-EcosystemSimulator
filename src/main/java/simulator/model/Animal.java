@@ -22,20 +22,31 @@ public abstract class Animal implements Entity, AnimalInfo{
     protected SelectionStrategy mateStrategy;
 
     protected Animal(String geneticCode, Diet diet, double sightRange, double initSpeed, SelectionStrategy mateStrategy, Vector2D pos){
+        if (geneticCode == null|| geneticCode.isBlank())
+			throw new IllegalArgumentException("geneticCode no puede ser nulo");
+		if (diet == null)
+			throw new IllegalArgumentException("diet no puede ser nulo");
+		if (sightRange <= 0.0)
+			throw new IllegalArgumentException("sightRange no puede ser < 0");
+        if (initSpeed <= 0.0)
+			throw new IllegalArgumentException("initSpeed no puede ser < 0");
+		if (mateStrategy == null)
+			throw new IllegalArgumentException("mateStrategy no puede ser nulo");
         this.geneticCode = geneticCode;
         this.diet = diet;
         this.sightRange = sightRange;
-        this.pos = pos; //pos puede ser null y en ese caso se inicializa a un valor aleatorio en el método init
+        this.pos = pos; 
         this.mateStrategy = mateStrategy;
         this.speed = Utils.getRandomizedParameter(initSpeed, 0.1);
         this.state = State.NORMAL;
-        this.energy = Constantes.INIT_ENERGY; //crear constantes?
+        this.energy = Constantes.INIT_ENERGY; 
         this.desire = Constantes.DESIRE_INIT;
         this.dest = null;
         this.mateTarget = null;
         this.baby = null;
         this.regionMngr = null;
-        //geneticCode tiene que ser una cadena de caracteres no vacía, sightRange y initSpeed números positivos y mateStrategy no es null. Hay que lanzar una excepción correspondiente con un mensaje informativo si algún valor es incorrecto (p.ej., IllegalArgumentException).
+        this.age = 0.0;
+
     }
 
     protected Animal(Animal p1, Animal p2){
@@ -52,26 +63,26 @@ public abstract class Animal implements Entity, AnimalInfo{
         this.pos = p1.getPosition().plus(Vector2D.getRandomVector(-1,1).scale(60.0*(Utils.RAND.nextGaussian()+1)));
         this.sightRange = Utils.getRandomizedParameter((p1.getSightRange()+p2.getSightRange())/2,0.2);
         this.speed = Utils.getRandomizedParameter((p1.getSpeed()+p2.getSpeed())/2, 0.2);
+        this.age = 0.0;
+
     }
 
-    void init(AnimalMapView regMngr){
+    public void init(AnimalMapView regMngr){
         this.regionMngr = regMngr;
-        //si pos es null hay que elegir una posición aleatoria dentro del rango del mapa (X entre 0 y regionMngr.getWidth()-1 e Y entre 0 y regionMngr.getHeight()-1). Si pos no es null hay que ajustarlo para que esté dentro del mapa si es necesario (ver el apartado Ajustar posiciones).
-        //Elegir una posición aleatoria para dest (dentro del rango del mapa).
         if (pos == null){
             double x = Utils.RAND.nextDouble() * (regionMngr.getWidth() - 1);
             double y = Utils.RAND.nextDouble() * (regionMngr.getHeight() - 1);
             this.pos = new Vector2D(x, y);
         }
         else {
-            ajustarPosicionDentroMapa(this.pos);
+            this.pos = ajustarPosicionDentroMapa(this.pos);
         }
         double dest_x = Utils.RAND.nextDouble() * (regionMngr.getWidth() - 1);
         double dest_y = Utils.RAND.nextDouble() * (regionMngr.getHeight() - 1);
         this.dest = new Vector2D(dest_x, dest_y);
     }
 
-    void ajustarPosicionDentroMapa(Vector2D pos){
+    Vector2D ajustarPosicionDentroMapa(Vector2D pos){
         double x = pos.getX();
         double y = pos.getY();
         double width = regionMngr.getWidth();
@@ -80,11 +91,13 @@ public abstract class Animal implements Entity, AnimalInfo{
         while (x < 0) x = (x + width);
         while (y >= height) y = (y - height);
         while (y < 0) y = (y + height);
+        return new Vector2D();
     }
 
-    Animal deliverBaby(){
-        return this.baby;
-        this.baby = null;
+    public Animal deliverBaby(){
+        Animal b = this.baby;
+	    this.baby = null;
+	    return b;
     }
 
     protected void move(double speed){
@@ -119,10 +132,12 @@ public abstract class Animal implements Entity, AnimalInfo{
     abstract protected void setDeadStateAction();
 
     public JSONObject asJSON(){
-        "pos": [28.90696391797469,22.009772194487613],
-        "gcode": "Sheep",
-        "diet": "HERBIVORE",
-        "state": "NORMAL"
+        JSONObject o = new JSONObject();
+	    o.put("pos", java.util.List.of(pos.getX(), pos.getY()));
+	    o.put("gcode", geneticCode);
+	    o.put("diet", diet.toString());
+	    o.put("state", state.toString());
+	    return o;
     }
 
 }

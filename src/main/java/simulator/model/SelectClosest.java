@@ -10,9 +10,18 @@ public class SelectClosest implements SelectionStrategy{
             return null;
         }
         else{
-            //getPosition para calcular
+            Animal animalMasCercano = as.get(0);
+            double distancia = a.pos.distanceTo(animalMasCercano.pos);
+            for (int i = 0; i < as.size(); i++){
+                if(as.get(i) != a && distancia > a.pos.distanceTo(as.get(i).pos)) {
+					animalMasCercano = as.get(i);
+					distancia = a.pos.distanceTo(as.get(i).pos);
+				}
+            }
             return animalMasCercano;
         }
     }
 
 }
+
+			

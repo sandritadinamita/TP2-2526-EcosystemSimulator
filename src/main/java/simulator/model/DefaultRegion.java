@@ -1,7 +1,7 @@
 package simulator.model;
 
 public class DefaultRegion {
-    getfood(a, dt){
+    getFood(a, dt){
         if(a){
             return 0.0;
         }

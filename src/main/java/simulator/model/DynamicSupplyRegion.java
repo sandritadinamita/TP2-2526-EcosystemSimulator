@@ -4,7 +4,7 @@ public class DynamicSupplyRegion {
     DynamicSupplyRegion(double comida, double factor){ //factor de crecimiento (número no negativo de tipo double).
 
     }
-    getfood(a, dt){
+    getFood(a, dt){
         if(a){
             return 0.0
         }

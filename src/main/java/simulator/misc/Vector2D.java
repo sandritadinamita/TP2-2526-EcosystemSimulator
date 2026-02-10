@@ -151,4 +151,13 @@ public class Vector2D {
     return "[" + x + "," + y + "]";
   }
 
+  public static Vector2D getRandomVector(double minimo, double maximo){
+    assert (maximo >= minimo);
+		double x = minimo + Utils.RAND.nextDouble(maximo - minimo);
+		double y = minimo + Utils.RAND.nextDouble(maximo - minimo);
+		assert (x >= minimo && x <= maximo);
+		assert (y >= minimo && y <= maximo);
+		return new Vector2D(x, y);
+  }
+
 }

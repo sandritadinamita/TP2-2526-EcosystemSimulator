@@ -46,7 +46,7 @@ public class Sheep extends Animal{
             this.state = State.DEAD;
         }
         if(this.state != State.DEAD){ //not sure
-            double newEnergy = this.energy + getfood(this, dt);
+            double newEnergy = this.energy + getFood(this, dt);
             if(newEnergy < Constantes.MAX_ENERGY && newEnergy > Constantes.ENERGY_DEAD){
                 this.energy = newEnergy;
             }
@@ -106,6 +106,8 @@ public class Sheep extends Animal{
         }
         else if(this.mateTarget == null){
             //buscar un animal para emparejarse y si no se encuentra uno avanza normalmente como el punto 1 del caso NORMAL arriba
+            Animal tentativeMate = mateStrategy.select(this, )
+            
             avanza(dt);
         }
         else if(this.mateTarget != null){
