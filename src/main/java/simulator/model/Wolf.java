@@ -1,5 +1,7 @@
 package simulator.model;
 
+import java.util.Set;
+
 import simulator.misc.Utils;
 import simulator.misc.Vector2D;
 
@@ -51,6 +53,16 @@ public class Wolf extends Animal{
             }
         }
     }
+    Animal buscarPresa(){
+        //pedir al gestor de regiones la lista de animales hervivoros en el campo visual usando el metodo getAnimalsInRange
+        // y despues elegir uno usando la estrategia de seleccion correspondiente. Si encuentra una presa, asignarla a huntTarget y cambiar el estado a HUNGER.
+         return null;
+    }
+    Animal buscarPareja(){
+        //pedir al gestor de regiones la lista de animales con el mismo codigo genetico en el campo visual usando el metodo getAnimalsInRange
+        // y despues elegir uno usando la estrategia de seleccion correspondiente.
+        return null;
+    }
     void avanza(double dt){
         if(this.dest.distanceTo(this.pos) < Constantes.COLLISION_RANGE){
             double dest_x = Utils.RAND.nextDouble() * (regionMngr.getWidth() - 1);
@@ -69,12 +81,12 @@ public class Wolf extends Animal{
         //2
         if(this.energy < Constantes.FOOD_THRSHOLD_WOLF){
             this.state = State.HUNGER;
-            this.mateTarget = null;
+            setHungerStateAction();
         }
         else {
             if(this.desire > Constantes.DESIRE_THRESHOLD_WOLF){
                 this.state = State.MATE;
-                this.huntTarget = null;
+                setMateStateAction();
             }
         }
     }
@@ -82,9 +94,8 @@ public class Wolf extends Animal{
     
     void updateHunger(double dt){
         //1
-        if(this.huntTarget == null||this.huntTarget.getState() == State.DEAD){ 
-            // falta poner o esta fuera del campo visual
-
+        if(this.huntTarget == null||this.huntTarget.getState() == State.DEAD||this.pos.distanceTo(this.huntTarget.getPosition()) > this.sightRange){ 
+            this.huntTarget = buscarPresa();
         } 
         //2
         if(this.huntTarget == null){
@@ -106,12 +117,11 @@ public class Wolf extends Animal{
         if(this.energy > Constantes.FOOD_THRSHOLD_WOLF){
             if(this.desire < Constantes.DESIRE_THRESHOLD_WOLF){
                 this.state = State.NORMAL;
-                this.huntTarget = null;
-                this.mateTarget = null;
+                setNormalStateAction();
             }
             else{
                 this.state = State.MATE;
-                this.huntTarget = null;
+                setMateStateAction();
             }
         }
     }
@@ -123,26 +133,28 @@ public class Wolf extends Animal{
             }
         //2
         if(this.mateTarget == null){
-            //buscar animal para emparejarse y si lo encuentra
-        
-            avanza(dt);
+            this.mateTarget = buscarPareja();
+            if(this.mateTarget == null){
+                avanza(dt);
+            }
         }
         else {
             this.dest = mateTarget.getPosition();
             move(speed*dt*Math.exp((energy-Constantes.MAX_ENERGY)*Constantes.HUNGER_DECAY_EXP_FACTOR));
             this.age = age + dt;
-            this.energy = energy -;//mantenerlo entre 0.0 y 100.0
-            this.desire = desire + (Constantes.DESIRE_INCREASE_RATE_WOLF*dt);// mantener entre 0.0 y 100.0
+            this.energy = Utils.constrainValueInRange(energy - Constantes.FOOD_DROP_RATE_WOLF*Constantes.FOOD_DROP_BOOST_FACTOR_WOLF*dt,Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY);
+            this.desire = Utils.constrainValueInRange(desire + Constantes.DESIRE_INCREASE_RATE_WOLF*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_DESIRE);
             if(this.getPosition().distanceTo(this.mateTarget.getPosition())< Constantes.COLLISION_RANGE){
                 this.desire = 0.0;
                 this.mateTarget.desire = 0.0;
                 if(!(this.isPregnant() || this.mateTarget.isPregnant())){//esto ns si esta bien 
-                //con probabilidad 0,9
-                this.baby = new Wolf(this, mateTarget);
-                this.mateTarget.baby = this.baby;
-            }
+                    if(Utils.RAND.nextDouble() < Constantes.PREGNANT_PROBABILITY_WOLF){ //no se si esta bien
+                        this.baby = new Wolf(this, mateTarget);
+                        this.mateTarget.baby = this.baby;
+                    }
+                }
 
-                this.energy = this.energy - Constantes.FOOD_DROP_DESIRE_WOLF; //mantenerlo entre 0.0 y 100.0
+                this.energy = Utils.constrainValueInRange(this.energy - Constantes.FOOD_DROP_DESIRE_WOLF,Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY);
                 ///ns si lo de la ebergia hay q hacerlo al mate target tambien
                 this.mateTarget = null;
             }
@@ -150,13 +162,12 @@ public class Wolf extends Animal{
         //3
         if(this.energy < Constantes.FOOD_THRSHOLD_WOLF){
             this.state = State.HUNGER;
-            this.mateTarget = null;
+            setHungerStateAction();
         }
         else {
             if(this.desire < Constantes.DESIRE_THRESHOLD_WOLF){
                 this.state = State.NORMAL;
-                this.mateTarget = null;
-                this.huntTarget = null;
+                setNormalStateAction();
           }
         }
     }
@@ -218,14 +229,15 @@ public class Wolf extends Animal{
 
     @Override
     protected void setNormalStateAction() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setNormalStateAction'");
+        // no se si esto es asi 
+        this.huntTarget = null;
+        this.mateTarget = null;
     }
 
     @Override
     protected void setMateStateAction() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setMateStateAction'");
+        this.huntTarget = null;
+        //comprobar
     }
 
     @Override

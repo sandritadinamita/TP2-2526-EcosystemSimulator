@@ -1,5 +1,6 @@
 package simulator.model;
 
+import simulator.misc.Utils;
 import simulator.misc.Vector2D;
 
 public class Sheep extends Animal{
@@ -58,8 +59,8 @@ public class Sheep extends Animal{
         }
         move(speed*dt*Math.exp((energy-100.0)*0.007));
         this.age = age + dt;
-        this.energy = energy - 20.0*dt; // manteniéndolo siempre entre 0.0 y 100.0
-        this.desire = desire + 40.0*dt; // manteniéndolo siempre entre 0.0 y 100.0
+        this.energy = Utils.constrainValueInRange(energy - 20.0*dt, Constantes.MIN_DESIRE_ENERGY,Constantes.MAX_ENERGY);
+        this.desire = Utils.constrainValueInRange(desire + 40.0*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_DESIRE);
     }
 
 
@@ -85,8 +86,8 @@ public class Sheep extends Animal{
             this.dest = pos.plus(pos.minus(dangerSource.getPosition()).direction());
             move(2.0*speed*dt*Math.exp((energy-100.0)*0.007));
             this.age = age + dt;
-            this.energy = energy - 20.0*1.2*dt; // manteniéndolo siempre entre 0.0 y 100.0
-            this.desire = desire + 40.0*dt; // manteniéndolo siempre entre 0.0 y 100.0
+            this.energy = Utils.constrainValueInRange(energy - 20.0*1.2*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY);
+            this.desire = Utils.constrainValueInRange(desire + 40.0*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY);
             if(this.state == State.DEAD){
                 this.dangerSource = null;
             }
@@ -111,8 +112,8 @@ public class Sheep extends Animal{
             this.dest = mateTarget.getPosition();
             move(2.0*speed*dt*Math.exp((energy-100.0)*0.007));
             this.age = age + dt;
-            this.energy = energy - 20.0*1.2*dt; //manteniéndola siempre entre 0.0 y 100.0
-            this.desire = desire + 40.0*dt; //manteniéndola siempre 0-100
+            this.energy = Utils.constrainValueInRange(energy - 20.0*1.2*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY);
+            this.desire = Utils.constrainValueInRange(desire + 40.0*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_DESIRE);
             if(this.mateTarget.getPosition().distanceTo(this.pos) < Constantes.COLLISION_RANGE){
                 this.desire = Constantes.DESIRE_INIT;
                 this.mateTarget.desire = Constantes.DESIRE_INIT; //deberiamos hacer un setdesire?
