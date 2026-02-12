@@ -40,7 +40,8 @@ public class Wolf extends Animal{
                 break;
         }
         if(){
-            //Si la posición está fuera del mapa, ajustarla y cambiar su estado a NORMAL.
+            ajustarPosicionDentroMapa(this.pos);
+            //Si la posición está fuera del mapa
             this.state = State.NORMAL;
         }
         if(this.energy == 0.0 || this.age > 14.0){
