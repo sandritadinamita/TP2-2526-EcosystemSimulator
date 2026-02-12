@@ -4,7 +4,6 @@ import simulator.misc.Utils;
 import simulator.misc.Vector2D;
 
 public class Sheep extends Animal{
-    //Es un animal herbívoro con código genético "Sheep". Es un animal que no caza a otros animales, sólo come lo que proporciona la región en la que está, y puede emparejarse con otros animales con el mismo código genético.
     private Animal dangerSource;
     private SelectionStrategy dangerStrategy;
 
@@ -41,9 +40,11 @@ public class Sheep extends Animal{
             //Si la posición está fuera del mapa
             ajustarPosicionDentroMapa(this.pos);
             this.state = State.NORMAL;
+            setNormalStateAction();
         }
         if(this.energy == Constantes.ENERGY_DEAD || this.age > Constantes.MAX_AGE_SHEEP){
             this.state = State.DEAD;
+            setDeadStateAction();
         }
         if(this.state != State.DEAD){ //not sure
             double newEnergy = this.energy + getFood(this, dt);
@@ -55,9 +56,9 @@ public class Sheep extends Animal{
 
     void avanza(double dt){
         if(this.dest.distanceTo(this.pos) < Constantes.COLLISION_RANGE){
-            this.dest = ;//nuevo destino random
+            this.dest = this.getPosition().plus(Vector2D.getRandomVector(-1,1).scale(60.0*(Utils.RAND.nextGaussian()+1)));//nuevo destino random PREGUNTAR
         }
-        move(speed*dt*Math.exp((energy-100.0)*0.007));
+        move(speed*dt*Math.exp((energy-100.0)*0.007)); //CTE PREGUNTAR
         this.age = age + dt;
         this.energy = Utils.constrainValueInRange(energy - 20.0*dt, Constantes.MIN_DESIRE_ENERGY,Constantes.MAX_ENERGY);
         this.desire = Utils.constrainValueInRange(desire + 40.0*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_DESIRE);
@@ -69,48 +70,58 @@ public class Sheep extends Animal{
         avanza(dt);
         if(this.dangerSource == null){
             //buscar nuevo animal peligroso;
-            if(this.desire > Constantes.DESIRE_THRESHOLD_SHEEP){
-                this.state = State.MATE;
-            }
+            this.dangerSource = buscarPeligro();
         }
-        else{
+        if(this.dangerSource != null){
             this.state = State.DANGER;
+            setDangerStateAction();
+        }
+        else if(this.dangerSource == null && this.desire > Constantes.DESIRE_THRESHOLD_SHEEP){
+                this.state = State.MATE;
+                setMateStateAction();
         }
     }
 
     void updateDanger(double dt){
+        if(this.dangerSource != null && this.state == State.DEAD){
+            this.dangerSource = null;
+        }
         if(this.dangerSource == null){
             avanza(dt);
         }
-        else if(this.dangerSource != null){
+        else{
             this.dest = pos.plus(pos.minus(dangerSource.getPosition()).direction());
             move(2.0*speed*dt*Math.exp((energy-100.0)*0.007));
             this.age = age + dt;
             this.energy = Utils.constrainValueInRange(energy - 20.0*1.2*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY);
             this.desire = Utils.constrainValueInRange(desire + 40.0*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY);
-            if(this.state == State.DEAD){
-                this.dangerSource = null;
-            }
         }
-        else if(this.dangerSource == null || dangerSource no esta en el campo visual){
-            //buscar un nuevo animal que se considere como peligro.
-            if(this.dangerSource == null && this.desire > Constantes.DESIRE_THRESHOLD_SHEEP){
-                this.state = State.MATE;
+        if(this.dangerSource == null || this.pos.distanceTo(this.dangerSource.getPosition()) > this.sightRange){ //COMPROBAR
+            this.dangerSource = buscarPeligro();
+            if(this.dangerSource == null){
+                if(this.desire > Constantes.DESIRE_THRESHOLD_SHEEP){
+                    this.state = State.MATE;
+                    setMateStateAction();
+                }
+                else{
+                    this.state = State.NORMAL;
+                    setNormalStateAction();
+                }
             }
         }
     }
 
     void updateMate(double dt){
-        if(this.mateTarget != null && (this.state == State.DEAD || fuera del campo visual)){
+        if(this.mateTarget != null && (this.state == State.DEAD || this.pos.distanceTo(this.dangerSource.getPosition()) > this.sightRange)){
             this.mateTarget = null;
         }
-        else if(this.mateTarget == null){
-            //buscar un animal para emparejarse y si no se encuentra uno avanza normalmente como el punto 1 del caso NORMAL arriba
-            Animal tentativeMate = mateStrategy.select(this, )
-            
-            avanza(dt);
+        if(this.mateTarget == null){
+            this.mateTarget = buscarPareja(); //Animal tentativeMate = mateStrategy.select(this, );
+            if(this.mateTarget == null){
+                avanza(dt);
+            }
         }
-        else if(this.mateTarget != null){
+        else{
             this.dest = mateTarget.getPosition();
             move(2.0*speed*dt*Math.exp((energy-100.0)*0.007));
             this.age = age + dt;
@@ -120,20 +131,28 @@ public class Sheep extends Animal{
                 this.desire = Constantes.DESIRE_INIT;
                 this.mateTarget.desire = Constantes.DESIRE_INIT; //deberiamos hacer un setdesire?
                 if(!this.isPregnant()){
-                    //con probabilidad de 0.9 va a llevar a un nuevo bebé usando 
+                    //con probabilidad de 0.9 va a llevar a un nuevo bebé usando -> copiar wolf
                     this.baby = new Sheep(this, mateTarget);
+                    //this.mate.baby ?????
                 }
-                this.mateTarget = null;
+                else{
+                    this.mateTarget = null;
+                }
             }
         }
         if(this.dangerSource == null){
-            //buscar un nuevo animal que se considere como peligroso.
-            if(this.desire < Constantes.DESIRE_THRESHOLD_SHEEP){
-                this.state = State.NORMAL;
-            }
+            this.dangerSource = buscarPeligro();
+        }
+        if(this.dangerSource != null){
+            this.state = State.DANGER;
+            setDangerStateAction();
+
         }
         else{
-            this.state = State.DANGER;
+            if(this.desire < Constantes.DESIRE_THRESHOLD_SHEEP){
+                this.state = State.NORMAL;
+                setNormalStateAction();
+            }
         }
     }
 

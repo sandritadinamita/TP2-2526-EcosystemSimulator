@@ -91,7 +91,7 @@ public abstract class Animal implements Entity, AnimalInfo{
         while (x < 0) x = (x + width);
         while (y >= height) y = (y - height);
         while (y < 0) y = (y + height);
-        return new Vector2D();
+        return new Vector2D(x, y);
     }
 
     public Animal deliverBaby(){
