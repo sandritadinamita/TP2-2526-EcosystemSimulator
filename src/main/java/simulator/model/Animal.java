@@ -124,6 +124,11 @@ public abstract class Animal implements Entity, AnimalInfo{
             break;
         }
     }
+    public boolean isPosEnMapa(Vector2D pos){
+        if(pos.getX() >= 0 && pos.getX() < regionMngr.getWidth() && pos.getY() >= 0 && pos.getY() < regionMngr.getHeight())
+            return true; 
+        else return false;
+    } 
 
     abstract protected void setNormalStateAction();
     abstract protected void setMateStateAction();

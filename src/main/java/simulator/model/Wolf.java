@@ -39,10 +39,10 @@ public class Wolf extends Animal{
             default:
                 break;
         }
-        if(){
+        if(!isPosEnMapa(this.getPosition())){
             ajustarPosicionDentroMapa(this.pos);
-            //Si la posición está fuera del mapa
             this.state = State.NORMAL;
+            setNormalStateAction();
         }
         if(this.energy == 0.0 || this.age > 14.0){
             this.state = State.DEAD;
@@ -68,7 +68,7 @@ public class Wolf extends Animal{
         if(this.dest.distanceTo(this.pos) < Constantes.COLLISION_RANGE){
             double dest_x = Utils.RAND.nextDouble() * (regionMngr.getWidth() - 1);
             double dest_y = Utils.RAND.nextDouble() * (regionMngr.getHeight() - 1);
-            this.dest = new Vector2D(dest_x, dest_y);
+            this.dest = new Vector2D(dest_x, dest_y);//pregunatr si esto esta bien o si se hace con la funcion 
         }
         move(speed*dt*Math.exp((energy-Constantes.MAX_ENERGY)*Constantes.HUNGER_DECAY_EXP_FACTOR));
         this.age = age + dt;
@@ -81,7 +81,7 @@ public class Wolf extends Animal{
         avanza(dt);
         //2
         if(this.energy < Constantes.FOOD_THRSHOLD_WOLF){
-            this.state = State.HUNGER;
+            this.state = State.HUNGER;//preguntar si esto se mete dentrp de sethunger
             setHungerStateAction();
         }
         else {
@@ -95,7 +95,7 @@ public class Wolf extends Animal{
     
     void updateHunger(double dt){
         //1
-        if(this.huntTarget == null||this.huntTarget.getState() == State.DEAD||this.pos.distanceTo(this.huntTarget.getPosition()) > this.sightRange){ 
+        if(this.huntTarget == null||this.huntTarget != null && this.huntTarget.getState() == State.DEAD||this.pos.distanceTo(this.huntTarget.getPosition()) > this.sightRange){ 
             this.huntTarget = buscarPresa();
         } 
         //2
@@ -129,9 +129,9 @@ public class Wolf extends Animal{
 
     void updateMate(double dt){
         //1
-        if((this.mateTarget == null && this.mateTarget.getState() == State.DEAD) /*falta poner fuera del campo viaul */){
+        if((this.mateTarget != null && this.mateTarget.getState() == State.DEAD)|| this.pos.distanceTo(this.mateTarget.getPosition()) > this.sightRange){
             this.mateTarget = null;
-            }
+        }
         //2
         if(this.mateTarget == null){
             this.mateTarget = buscarPareja();
@@ -148,10 +148,10 @@ public class Wolf extends Animal{
             if(this.getPosition().distanceTo(this.mateTarget.getPosition())< Constantes.COLLISION_RANGE){
                 this.desire = 0.0;
                 this.mateTarget.desire = 0.0;
-                if(!(this.isPregnant() || this.mateTarget.isPregnant())){//esto ns si esta bien 
+                if(!(this.isPregnant() || this.mateTarget.isPregnant())){//esto ns si esta bien PREGUNTAR
                     if(Utils.RAND.nextDouble() < Constantes.PREGNANT_PROBABILITY_WOLF){ //no se si esta bien
                         this.baby = new Wolf(this, mateTarget);
-                        this.mateTarget.baby = this.baby;
+                        this.mateTarget.baby = this.baby; //preguntar
                     }
                 }
 

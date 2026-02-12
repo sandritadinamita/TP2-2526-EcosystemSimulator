@@ -36,8 +36,7 @@ public class Sheep extends Animal{
             default:
                 break;
         }        
-        if(){
-            //Si la posición está fuera del mapa
+        if(!isPosEnMapa(this.getPosition())){
             ajustarPosicionDentroMapa(this.pos);
             this.state = State.NORMAL;
             setNormalStateAction();
