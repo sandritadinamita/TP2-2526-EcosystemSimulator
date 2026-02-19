@@ -41,7 +41,6 @@ public class Wolf extends Animal{
         }
         if(!isPosEnMapa(this.getPosition())){
             ajustarPosicionDentroMapa(this.pos);
-            this.state = State.NORMAL;
             setNormalStateAction();
         }
         if(this.energy == 0.0 || this.age > 14.0){
@@ -66,9 +65,7 @@ public class Wolf extends Animal{
     }
     void avanza(double dt){
         if(this.dest.distanceTo(this.pos) < Constantes.COLLISION_RANGE){
-            double dest_x = Utils.RAND.nextDouble() * (regionMngr.getWidth() - 1);
-            double dest_y = Utils.RAND.nextDouble() * (regionMngr.getHeight() - 1);
-            this.dest = new Vector2D(dest_x, dest_y);//pregunatr si esto esta bien o si se hace con la funcion 
+            this.dest = this.getPosition().plus(Vector2D.getRandomVector(-1,1).scale(Constantes.NEARBY_FACTOR*(Utils.RAND.nextGaussian()+1)));
         }
         move(speed*dt*Math.exp((energy-Constantes.MAX_ENERGY)*Constantes.HUNGER_DECAY_EXP_FACTOR));
         this.age = age + dt;
@@ -81,12 +78,10 @@ public class Wolf extends Animal{
         avanza(dt);
         //2
         if(this.energy < Constantes.FOOD_THRSHOLD_WOLF){
-            this.state = State.HUNGER;//preguntar si esto se mete dentrp de sethunger
             setHungerStateAction();
         }
         else {
             if(this.desire > Constantes.DESIRE_THRESHOLD_WOLF){
-                this.state = State.MATE;
                 setMateStateAction();
             }
         }
@@ -117,11 +112,9 @@ public class Wolf extends Animal{
         //3
         if(this.energy > Constantes.FOOD_THRSHOLD_WOLF){
             if(this.desire < Constantes.DESIRE_THRESHOLD_WOLF){
-                this.state = State.NORMAL;
                 setNormalStateAction();
             }
             else{
-                this.state = State.MATE;
                 setMateStateAction();
             }
         }
@@ -162,12 +155,10 @@ public class Wolf extends Animal{
         }
         //3
         if(this.energy < Constantes.FOOD_THRSHOLD_WOLF){
-            this.state = State.HUNGER;
             setHungerStateAction();
         }
         else {
             if(this.desire < Constantes.DESIRE_THRESHOLD_WOLF){
-                this.state = State.NORMAL;
                 setNormalStateAction();
           }
         }
@@ -230,21 +221,21 @@ public class Wolf extends Animal{
 
     @Override
     protected void setNormalStateAction() {
-        // no se si esto es asi 
+        this.state = State.NORMAL;
         this.huntTarget = null;
         this.mateTarget = null;
     }
 
     @Override
     protected void setMateStateAction() {
+        this.state = State.MATE;
         this.huntTarget = null;
-        //comprobar
     }
 
     @Override
     protected void setHungerStateAction() {
+        this.state = State.HUNGER;
         mateTarget = null;
-        //comprobar
     }
 
     @Override

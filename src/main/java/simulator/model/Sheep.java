@@ -42,7 +42,6 @@ public class Sheep extends Animal{
             setNormalStateAction();
         }
         if(this.energy == Constantes.ENERGY_DEAD || this.age > Constantes.MAX_AGE_SHEEP){
-            this.state = State.DEAD;
             setDeadStateAction();
         }
         if(this.state != State.DEAD){ //not sure
@@ -55,12 +54,12 @@ public class Sheep extends Animal{
 
     void avanza(double dt){
         if(this.dest.distanceTo(this.pos) < Constantes.COLLISION_RANGE){
-            this.dest = this.getPosition().plus(Vector2D.getRandomVector(-1,1).scale(60.0*(Utils.RAND.nextGaussian()+1)));//nuevo destino random PREGUNTAR
+            this.dest = this.getPosition().plus(Vector2D.getRandomVector(-1,1).scale(Constantes.NEARBY_FACTOR*(Utils.RAND.nextGaussian()+1)));
         }
-        move(speed*dt*Math.exp((energy-100.0)*0.007)); //CTE PREGUNTAR
+        move(speed*dt*Math.exp((energy-Constantes.INIT_ENERGY)*Constantes.HUNGER_DECAY_EXP_FACTOR)); //CTE PREGUNTAR
         this.age = age + dt;
-        this.energy = Utils.constrainValueInRange(energy - 20.0*dt, Constantes.MIN_DESIRE_ENERGY,Constantes.MAX_ENERGY);
-        this.desire = Utils.constrainValueInRange(desire + 40.0*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_DESIRE);
+        this.energy = Utils.constrainValueInRange(energy - Constantes.FOOD_DROP_RATE_SHEEP*dt, Constantes.MIN_DESIRE_ENERGY,Constantes.MAX_ENERGY);
+        this.desire = Utils.constrainValueInRange(desire + Constantes.DESIRE_INCREASE_RATE_SHEEP*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_DESIRE);
     }
 
 
@@ -72,11 +71,9 @@ public class Sheep extends Animal{
             this.dangerSource = buscarPeligro();
         }
         if(this.dangerSource != null){
-            this.state = State.DANGER;
             setDangerStateAction();
         }
         else if(this.dangerSource == null && this.desire > Constantes.DESIRE_THRESHOLD_SHEEP){
-                this.state = State.MATE;
                 setMateStateAction();
         }
     }
@@ -90,20 +87,18 @@ public class Sheep extends Animal{
         }
         else{
             this.dest = pos.plus(pos.minus(dangerSource.getPosition()).direction());
-            move(2.0*speed*dt*Math.exp((energy-100.0)*0.007));
+            move(Constantes.BOOST_FACTOR_SHEEP*speed*dt*Math.exp((energy-Constantes.INIT_ENERGY)*Constantes.HUNGER_DECAY_EXP_FACTOR));
             this.age = age + dt;
-            this.energy = Utils.constrainValueInRange(energy - 20.0*1.2*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY);
-            this.desire = Utils.constrainValueInRange(desire + 40.0*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY);
+            this.energy = Utils.constrainValueInRange(energy - Constantes.FOOD_DROP_RATE_SHEEP*Constantes.FOOD_DROP_BOOST_FACTOR_SHEEP*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY);
+            this.desire = Utils.constrainValueInRange(desire + Constantes.DESIRE_INCREASE_RATE_SHEEP*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY);
         }
         if(this.dangerSource == null || this.pos.distanceTo(this.dangerSource.getPosition()) > this.sightRange){ //COMPROBAR
             this.dangerSource = buscarPeligro();
             if(this.dangerSource == null){
                 if(this.desire > Constantes.DESIRE_THRESHOLD_SHEEP){
-                    this.state = State.MATE;
                     setMateStateAction();
                 }
                 else{
-                    this.state = State.NORMAL;
                     setNormalStateAction();
                 }
             }
@@ -122,17 +117,18 @@ public class Sheep extends Animal{
         }
         else{
             this.dest = mateTarget.getPosition();
-            move(2.0*speed*dt*Math.exp((energy-100.0)*0.007));
+            move(2.0*speed*dt*Math.exp((energy-Constantes.INIT_ENERGY)*Constantes.HUNGER_DECAY_EXP_FACTOR));
             this.age = age + dt;
-            this.energy = Utils.constrainValueInRange(energy - 20.0*1.2*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY);
-            this.desire = Utils.constrainValueInRange(desire + 40.0*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_DESIRE);
+            this.energy = Utils.constrainValueInRange(energy - Constantes.FOOD_DROP_RATE_SHEEP*Constantes.FOOD_DROP_BOOST_FACTOR_SHEEP*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY);
+            this.desire = Utils.constrainValueInRange(desire + Constantes.DESIRE_INCREASE_RATE_SHEEP*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_DESIRE);
             if(this.mateTarget.getPosition().distanceTo(this.pos) < Constantes.COLLISION_RANGE){
                 this.desire = Constantes.DESIRE_INIT;
                 this.mateTarget.desire = Constantes.DESIRE_INIT; //deberiamos hacer un setdesire?
                 if(!this.isPregnant()){
-                    //con probabilidad de 0.9 va a llevar a un nuevo bebé usando -> copiar wolf
-                    this.baby = new Sheep(this, mateTarget);
-                    //this.mate.baby ?????
+                    if(Utils.RAND.nextDouble() < Constantes.PREGNANT_PROBABILITY_SHEEP){ //no se si esta bien
+                        this.baby = new Sheep(this, mateTarget);
+                        this.mateTarget.baby = this.baby; //preguntar
+                    }
                 }
                 else{
                     this.mateTarget = null;
@@ -143,13 +139,11 @@ public class Sheep extends Animal{
             this.dangerSource = buscarPeligro();
         }
         if(this.dangerSource != null){
-            this.state = State.DANGER;
             setDangerStateAction();
 
         }
         else{
             if(this.desire < Constantes.DESIRE_THRESHOLD_SHEEP){
-                this.state = State.NORMAL;
                 setNormalStateAction();
             }
         }
@@ -212,15 +206,15 @@ public class Sheep extends Animal{
 
     @Override
     protected void setNormalStateAction() {
+        this.state = State.NORMAL;
         mateTarget = null; 
-        dangerSource = null;
-        //comprobar  
+        dangerSource = null; 
     }
 
     @Override
     protected void setMateStateAction() {
+        this.state = State.MATE;
         dangerSource = null;
-        //comprobar
     }
 
     @Override
@@ -230,6 +224,7 @@ public class Sheep extends Animal{
 
     @Override
     protected void setDangerStateAction() {
+        this.state = State.DANGER;
         mateTarget = null;
        //comprobar
     }
@@ -237,6 +232,7 @@ public class Sheep extends Animal{
 
     @Override
     protected void setDeadStateAction() {
+        this.state = State.DEAD;
         mateTarget = null;
         dangerSource = null;
     }
