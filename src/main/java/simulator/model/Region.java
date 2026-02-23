@@ -1,6 +1,7 @@
 package simulator.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -25,10 +26,17 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo{
     }
     final List<Animal> getAnimals(){
         //devuelve una versión inmodificable de la lista de animales.
-        return lista;
+        return Collections.unmodifiableList(lista);
     }
     public JSONObject asJSON(){
-        "animals": [a1,a2,...]
-        //devuelve una estructura JSON como la siguiente donde ai es lo que devuelve asJSON() del animal correspondiente:
+        JSONObject o = new JSONObject();
+
+        List<JSONObject> animalsJSON = new ArrayList<>();
+        for (Animal a : lista) {
+            animalsJSON.add(a.asJSON());
+        }
+
+        o.put("animals", animalsJSON);
+        return o;
     }
 }
