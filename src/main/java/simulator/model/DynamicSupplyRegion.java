@@ -6,10 +6,10 @@ public class DynamicSupplyRegion {
     }
     getFood(a, dt){
         if(a){
-            return 0.0
+            return 0.0;
         }
         else{
-            return Math.min(food,60.0*Math.exp(-Math.max(0,n-5.0)*2.0)*dt);
+            return Math.min(food,Constantes.FOOD_EAT_RATE_HERBS*Math.exp(-Math.max(0,n-Constantes.FOOD_SHORTAGE_TH_HERBS)*Constantes.FOOD_SHORTAGE_EXP_HERBS)*dt);
         }
         //Además quita el valor devuelto a la cantidad de comida food que tiene la región actualmente. 
     }
