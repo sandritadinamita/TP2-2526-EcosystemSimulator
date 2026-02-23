@@ -1,21 +1,29 @@
 package simulator.model;
-import java.util.List;
-import java.util.function.Predicate;
 
-import simulator.misc.Utils;
 
-public class DefaultRegion implements FoodSupplier{ //pregunat si es extends region e implements food suplier y animal info
+public class DefaultRegion extends Region{ //pregunat si es extends region e implements food suplier y animal info
     public double getFood(AnimalInfo a, double dt){
         if(a.getDiet() == Diet.CARNIVORE){
             return 0.0;
         }
         else{
-            
+            int n = 0;
+            for (Animal animal : this.lista) { //preguntar
+                if (animal.getDiet() == Diet.HERBIVORE &&
+                    animal.getState() != State.DEAD) {
+                    n++;
+                }
+            }
             return Constantes.FOOD_EAT_RATE_HERB*Math.exp(-Math.max(0, n-Constantes. FOOD_SHORTAGE_TH_HERB )*Constantes.FOOD_SHORTAGE_EXP_HERB)*dt;
             
         }
     }
 
+    @Override
+    public void update(double dt) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    }
 
 
 }
