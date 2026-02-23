@@ -51,6 +51,7 @@ public class Constantes {
     final static double FOOD_SHORTAGE_EXP_HERBS = 2.0;
     final static double INIT_FOOD = 100.0;
     final static double FACTOR = 2.0;
+    final static double FOOD_GROWTH_PROBABILITY = 0.5;
 
 
 
