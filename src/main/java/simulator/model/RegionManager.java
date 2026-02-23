@@ -101,40 +101,34 @@ public class RegionManager implements AnimalMapView{ //sin terminar
 	}
 
    // updatearlo 
+   @Override
+	public int getCols() {
+		return cols;
+	}
 
-    @Override
-    public int getCols() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getCols'");
-    }
+	@Override
+	public int getRows() {
+		return rows;
+	}
 
-    @Override
-    public int getRows() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRows'");
-    }
+	@Override
+	public int getWidth() {
+		return mapWidth;
+	}
 
-    @Override
-    public int getWidth() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getWidth'");
-    }
+	@Override
+	public int getHeight() {
+		return mapHeight;
+	}
 
-    @Override
-    public int getHeight() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getHeight'");
-    }
+	@Override
+	public int getRegionWidth() {
+		return regionWidth;
+	}
 
-    @Override
-    public int getRegionWidth() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRegionWidth'");
-    }
+	@Override
+	public int getRegionHeight() {
+		return regionHeight;
+	}
 
-    @Override
-    public int getRegionHeight() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRegionHeight'");
-    }
 }
