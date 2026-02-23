@@ -58,7 +58,7 @@ public class RegionManager implements AnimalMapView{ //sin terminar
         this.animalRegion.remove(a);
     }
 
-    void updateanimalRegion(Animal a){
+    void updateAnimalRegion(Animal a){
          Vector2D pos = a.getPosition();
 
         Region r = this.region[pos.getY()]//no sabemos como sacar la region a partir de la x y la y del animal
