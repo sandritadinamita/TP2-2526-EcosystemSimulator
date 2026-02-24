@@ -60,7 +60,7 @@ public class Simulator implements JSONable {
                 this.regionMngr.updateAnimalRegion(a);
             }
         }
-        regionMngr.updateAllRegions(dt);//preguntar orden 
+        regionMngr.updateAllRegions(dt);
         for(Animal a: this.animals){
             if(a.isPregnant()){
                 Animal animalBaby = a.deliverBaby();
