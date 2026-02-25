@@ -1,6 +1,8 @@
 package simulator.factories;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,22 +14,26 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 
 	public BuilderBasedFactory() {
       // Create a HashMap for builders, and a LinkedList buildersInfo
-      // …
+      this.builders = new HashMap<>();
+	  this.buildersInfo = new LinkedList<>();
 	}
 
 	public BuilderBasedFactory(List<Builder<T>> builders) {
-		this();
 
        // call addBuilder(b) for each builder b in builder
-       // …
+       for(Builder<T> b : builders){
+		this.addBuilder(b);
+	   }
 	}
 
 	public void addBuilder(Builder<T> b) {
       // add an entry "b.getTypeTag() |−> b" to builders.
       // ...
+	  this.builders.put(b.getTypeTag(), b);
       // add b.getInfo() to buildersInfo
       // ...
-	}
+	  this.buildersInfo.add(b.getInfo()); //ns si esta bien
+		}
 
 	@Override
 	public T createInstance(JSONObject info) {
@@ -42,6 +48,7 @@ public class BuilderBasedFactory<T> implements Factory<T> {
     //
     //   info.has("data") ? info.getJSONObject("data") : new JSONObject()
     // …
+	
 
     // If no builder is found or the result is null ...
 		throw new IllegalArgumentException("Unrecognized ‘info’:" + info.toString());

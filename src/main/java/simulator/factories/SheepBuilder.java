@@ -18,6 +18,7 @@ public class SheepBuilder extends Builder<Animal>{
 
     public SheepBuilder(String typeTag, String desc) {
         super("sheep", " ");
+        //comprobar 
     }
 
     @Override
@@ -33,16 +34,23 @@ public class SheepBuilder extends Builder<Animal>{
         if(data.has("pos")){
             JSONObject pos = data.getJSONObject("pos");
 
-            JSONArray xr = pos.getJSONArray("x_range");
-			JSONArray yr = pos.getJSONArray("y_range");
+            JSONArray xRange = pos.getJSONArray("x_range");
+			JSONArray yRange = pos.getJSONArray("y_range");
 
-			double xmin = xr.getDouble(0);
-			double xmax = xr.getDouble(1);
-			double ymin = yr.getDouble(0);
-			double ymax = yr.getDouble(1);
+            if (xRange.length() < 2|| yRange.length() < 2)
+			throw new IllegalArgumentException("Rangos de posición inválidos, deben tener dos elementos cada uno");
+
+			double xmin = xRange.getDouble(0);
+			double xmax = xRange.getDouble(1);
+			double ymin = yRange.getDouble(0);
+			double ymax = yRange.getDouble(1);
+
 
             double x = xmin + (xmax - xmin) * Utils.RAND.nextDouble();
 			double y = ymin + (ymax - ymin) * Utils.RAND.nextDouble();
+
+            double x = Utils.RAND.nextDouble(xmin, xmax+1);
+            double y = Utils.RAND.nextDouble(ymin, ymax+1);
 
 			position = new Vector2D(x, y);
         }
