@@ -21,24 +21,12 @@ public class DynamicSupplyRegionBuilder extends Builder<Region>{
             else factor = 2.5;
         if(data.has("food")){
             comida = data.getDouble("food");
-     }
+        }
             else comida = 1250.0;
-        
-        //double factor = data.optDouble("factor", 2.5);
-		//double comida = data.optDouble("food", 1250.0);
          if(comida <= 0.0)
             throw new IllegalArgumentException("comida no puede puede ser un numero negativo o cero");
         if(factor < 0.0)
             throw new IllegalArgumentException("factor no puede ser un numero negativo");
-
-        if(data.has("factor")){
-            factor = data.getDouble("factor");
-        }
-            else factor = 2.5;
-        if(data.has("food")){
-            comida = data.getDouble("food");
-        }
-            else comida = 1250.0;
         
         return new DynamicSupplyRegion(comida, factor);
     }
