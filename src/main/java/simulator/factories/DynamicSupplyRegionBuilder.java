@@ -11,6 +11,12 @@ public class DynamicSupplyRegionBuilder extends Builder<Region>{
         super("dynamic", " ");
     }
 
+    protected void fillInData(JSONObject o) {
+        o.put("factor", "food increase factor");
+		o.put("food", "initial amount of food in the region");
+
+    }
+
     @Override
     protected Region createInstance(JSONObject data) { // esta yo lo haria como el de sheep y como el de wolf
         double factor;

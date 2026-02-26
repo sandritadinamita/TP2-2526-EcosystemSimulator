@@ -23,6 +23,14 @@ public class WolfBuilder extends Builder<Animal>{
         //comprobar 
 
     }
+    protected void fillInData(JSONObject o) {
+        JSONObject aux = new JSONObject();
+		aux.put("mate_strategy", "estrategía para buscar pareja");
+		aux.put("hunt_strategy", "estrategía para cazar presas");
+		aux.put("pos", "posicion del animal");
+		o.put("data", aux);
+	}
+
 
     @Override
     protected Animal createInstance(JSONObject data) {
