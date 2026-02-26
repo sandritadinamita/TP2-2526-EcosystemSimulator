@@ -40,6 +40,16 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 		if (info == null) {
 			throw new IllegalArgumentException("’info’ cannot be null");
 		}
+		String type = info.getString("type");
+		Builder<T> builder = this.builders.get(type);
+		if(builder != null){ //ns si esta bien
+			T result = builder.createInstance(info.has("data") ? info.getJSONObject("data") : new JSONObject());
+			if(result != null){
+				return result;
+		}
+		}
+
+	  //
 
 		// Look for a builder with a tag equals to info.getString("type"), in the
     //  map _builder, and call its createInstance method and return the result
@@ -51,7 +61,7 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 	
 
     // If no builder is found or the result is null ...
-		throw new IllegalArgumentException("Unrecognized ‘info’:" + info.toString());
+			throw new IllegalArgumentException("Unrecognized ‘info’:" + info.toString());
 	}
 
 	@Override

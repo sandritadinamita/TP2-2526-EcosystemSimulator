@@ -46,8 +46,8 @@ public class SheepBuilder extends Builder<Animal>{
 			double ymax = yRange.getDouble(1);
 
 
-            double x = xmin + (xmax - xmin) * Utils.RAND.nextDouble();
-			double y = ymin + (ymax - ymin) * Utils.RAND.nextDouble();
+            //double x = xmin + (xmax - xmin) * Utils.RAND.nextDouble();
+			//double y = ymin + (ymax - ymin) * Utils.RAND.nextDouble();
 
             double x = Utils.RAND.nextDouble(xmin, xmax+1);
             double y = Utils.RAND.nextDouble(ymin, ymax+1);
