@@ -4,7 +4,7 @@ import simulator.misc.Utils;
 public class DynamicSupplyRegion extends DefaultRegion{
     private double food;
     private double factor;
-    public DynamicSupplyRegion(double comida, double factor){ //factor de crecimiento (número no negativo de tipo double).
+    public DynamicSupplyRegion(double comida, double factor){ 
         if(comida <= 0.0)
             throw new IllegalArgumentException("comida no puede puede ser un numero negativo o cero");
         if(factor < 0.0)
@@ -20,8 +20,6 @@ public class DynamicSupplyRegion extends DefaultRegion{
         return comida;
 
     }
-
-    //Su método update incrementa, con probabilidad 0.5, la cantidad de comida por dt*factor donde factor es el factor de crecimiento.
 
 
     @Override

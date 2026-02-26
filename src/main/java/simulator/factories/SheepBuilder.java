@@ -18,14 +18,14 @@ public class SheepBuilder extends Builder<Animal>{
 
     public SheepBuilder(String typeTag, String desc) {
         super("sheep", " ");
-        //comprobar 
     }
+
     protected void fillInData(JSONObject o) {
-        JSONObject aux = new JSONObject();
-		aux.put("mate_strategy", "estrategía para buscar pareja");
-		aux.put("danger_strategy", "estrategía para huir cuando hay peligro");
-		aux.put("pos", "posicion del animal");
-		o.put("data", aux);
+        //JSONObject aux = new JSONObject();
+		o.put("mate_strategy", "estrategia para buscar pareja");
+		o.put("danger_strategy", "estrategia para huir cuando hay peligro");
+		o.put("pos", "posicion del animal");
+		//o.put("data", aux);
 	}
 
     @Override
@@ -53,14 +53,12 @@ public class SheepBuilder extends Builder<Animal>{
 			double ymax = yRange.getDouble(1);
 
 
-            //double x = xmin + (xmax - xmin) * Utils.RAND.nextDouble();
-			//double y = ymin + (ymax - ymin) * Utils.RAND.nextDouble();
-
-            double x = Utils.RAND.nextDouble(xmin, xmax+1);
+            double x = Utils.RAND.nextDouble(xmin, xmax+1); //?
             double y = Utils.RAND.nextDouble(ymin, ymax+1);
 
 			position = new Vector2D(x, y);
         }
+
         else position = null;
         return new Sheep(mateStrategy, dangerStrategy, position);
     }

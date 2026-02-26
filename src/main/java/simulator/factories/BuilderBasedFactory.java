@@ -33,7 +33,7 @@ public class BuilderBasedFactory<T> implements Factory<T> {
       // add b.getInfo() to buildersInfo
       // ...
 	  this.buildersInfo.add(b.getInfo()); //ns si esta bien
-		}
+	}
 
 	@Override
 	public T createInstance(JSONObject info) {
@@ -46,22 +46,10 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 			T result = builder.createInstance(info.has("data") ? info.getJSONObject("data") : new JSONObject());
 			if(result != null){
 				return result;
+			}
 		}
-		}
+		throw new IllegalArgumentException("Unrecognized ‘info’:" + info.toString());
 
-	  //
-
-		// Look for a builder with a tag equals to info.getString("type"), in the
-    //  map _builder, and call its createInstance method and return the result
-    // if it is not null. The value you pass to createInstance is the following
-    // because 'data' is optional:
-    //
-    //   info.has("data") ? info.getJSONObject("data") : new JSONObject()
-    // …
-	
-
-    // If no builder is found or the result is null ...
-			throw new IllegalArgumentException("Unrecognized ‘info’:" + info.toString());
 	}
 
 	@Override

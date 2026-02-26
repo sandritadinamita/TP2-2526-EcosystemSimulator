@@ -1,7 +1,7 @@
 package simulator.model;
 
 
-public class DefaultRegion extends Region{ //pregunat si es extends region e implements food suplier y animal info
+public class DefaultRegion extends Region{ //pregunar si es extends region e implements food suplier y animal info
     public double getFood(AnimalInfo a, double dt){
         if(a.getDiet() == Diet.CARNIVORE){
             return 0.0;
@@ -20,10 +20,7 @@ public class DefaultRegion extends Region{ //pregunat si es extends region e imp
     }
 
     @Override
-    public void update(double dt) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
+    public void update(double dt) {}
 
 
 }

@@ -81,10 +81,10 @@ public class RegionManager implements AnimalMapView{ //sin terminar
     }
     public List<Animal> getAnimalsInRange(Animal a, Predicate<Animal> filter){
         // lo hacemos cuando los filters mirar de sheep y wolf lo de campo de vision
-
     }
+
     public JSONObject asJSON(){
-          	JSONObject o = new JSONObject();
+        JSONObject o = new JSONObject();
 		JSONArray a = new JSONArray();
 		for (int i = 0; i< rows; i ++ ) {
 			for (int j = 0; j < cols; j ++){
@@ -100,7 +100,6 @@ public class RegionManager implements AnimalMapView{ //sin terminar
 		return o;
 	}
 
-   // updatearlo 
    @Override
 	public int getCols() {
 		return cols;

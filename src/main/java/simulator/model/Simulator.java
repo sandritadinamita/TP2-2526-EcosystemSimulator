@@ -9,7 +9,8 @@ import org.json.JSONObject;
 import simulator.factories.Factory;
 
 public class Simulator implements JSONable {
-    //añadir factoria animales y regiones
+    private Factory<Animal> factoriaAnimales;
+    private Factory<Region> factoriaRegiones;
     private RegionManager regionMngr;
     private List<Animal> animals;
     private double tiempo;
@@ -18,26 +19,26 @@ public class Simulator implements JSONable {
             this.tiempo = 0.0;
             this.regionMngr = new RegionManager(cols, rows, width, height);
             this.animals = new ArrayList<Animal>();
-            //hay que inicializar las factorias 
-
+            this.factoriaRegiones = regionsFactory;
+            this.factoriaAnimales = animalsFactory;
     }
 
     private void setRegion(int row, int col, Region r){
         this.regionMngr.setRegion(row, col, r);
     }
-    private void setRegion(int row, int col, JSONObject rJson){
-        Region R = //mas adelante con las factorias 
 
+    void setRegion(int row, int col, JSONObject rJson){
+        Region R = factoriaRegiones.createInstance(rJson); 
         setRegion(row, col, R);
-
     }
+
     private void addAnimal(Animal a){
         this.animals.add(a);
         this.regionMngr.registerAnimal(a);
     }
-    public void addAnimal(JSONObject aJson){
-        Animal A = //mas adelante con las factorias 
 
+    public void addAnimal(JSONObject aJson){
+        Animal A = factoriaAnimales.createInstance(aJson); 
         addAnimal(A);
 
     }
@@ -75,7 +76,7 @@ public class Simulator implements JSONable {
 
     }
     public JSONObject asJSON(){
-         JSONObject o = new JSONObject();
+        JSONObject o = new JSONObject();
 		o.put("time", tiempo);
 		o.put("state", regionMngr.asJSON());
 		return o;

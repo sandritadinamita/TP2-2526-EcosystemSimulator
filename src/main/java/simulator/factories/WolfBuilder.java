@@ -24,11 +24,11 @@ public class WolfBuilder extends Builder<Animal>{
 
     }
     protected void fillInData(JSONObject o) {
-        JSONObject aux = new JSONObject();
-		aux.put("mate_strategy", "estrategía para buscar pareja");
-		aux.put("hunt_strategy", "estrategía para cazar presas");
-		aux.put("pos", "posicion del animal");
-		o.put("data", aux);
+        //JSONObject aux = new JSONObject();
+		o.put("mate_strategy", "estrategía para buscar pareja");
+		o.put("hunt_strategy", "estrategía para cazar presas");
+		o.put("pos", "posicion del animal");
+		//o.put("data", aux);
 	}
 
 
@@ -64,9 +64,6 @@ public class WolfBuilder extends Builder<Animal>{
         }
         else position = null;
         return new Wolf(mateStrategy, dangerStrategy, position);
-    }
-
-
     }
 
 }

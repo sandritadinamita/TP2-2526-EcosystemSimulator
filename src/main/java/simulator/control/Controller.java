@@ -2,6 +2,7 @@ package simulator.control;
 
 import java.io.OutputStream;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import simulator.model.Simulator;
@@ -12,6 +13,15 @@ public class Controller {
         this.sim = sim;
     }
     public void loadData(JSONObject data){
+        if(data != null){
+            JSONArray region = data.getJSONArray("regions");
+            for(JSONArray r: region){
+
+            }
+        }
+        else{
+            throw new IllegalArgumentException("data is null");
+        }
 
     }
     JSONObject
