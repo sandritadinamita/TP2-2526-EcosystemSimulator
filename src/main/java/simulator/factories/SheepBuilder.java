@@ -20,6 +20,13 @@ public class SheepBuilder extends Builder<Animal>{
         super("sheep", " ");
         //comprobar 
     }
+    protected void fillInData(JSONObject o) {
+        JSONObject aux = new JSONObject();
+		aux.put("mate_strategy", "estrategía para buscar pareja");
+		aux.put("danger_strategy", "estrategía para huir cuando hay peligro");
+		aux.put("pos", "posicion del animal");
+		o.put("data", aux);
+	}
 
     @Override
     protected Animal createInstance(JSONObject data) {
