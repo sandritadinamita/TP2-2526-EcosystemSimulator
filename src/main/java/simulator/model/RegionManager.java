@@ -1,5 +1,6 @@
 package simulator.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,7 +82,19 @@ public class RegionManager implements AnimalMapView{ //sin terminar
     }
     public List<Animal> getAnimalsInRange(Animal a, Predicate<Animal> filter){
         // lo hacemos cuando los filters mirar de sheep y wolf lo de campo de vision
+        List<Animal> animals = new ArrayList<>();
+        for (int i= 0; i< rows; i++){
+            for(int j = 0; j< cols; j++){
+                    for(Animal an : this.regions[i][j].getAnimals()){
+                        if(filter.test(an) && an.getPosition().distanceTo(a.getPosition()) <= a.getSightRange()){
+                            animals.add(an);
+                        }
+                    }
+                }
+            }
+            return animals;
     }
+
 
     public JSONObject asJSON(){
         JSONObject o = new JSONObject();

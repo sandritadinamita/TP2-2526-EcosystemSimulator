@@ -1,5 +1,8 @@
 package simulator.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import simulator.misc.Utils;
 import simulator.misc.Vector2D;
 
@@ -16,6 +19,26 @@ public class Sheep extends Animal{
         super(p1, p2);
         this.dangerStrategy = p1.dangerStrategy;
         this.dangerSource = null;
+    }
+    Animal buscarPareja(){
+         List<Animal> parejas = new ArrayList<>();
+        Animal pareja = null;
+        parejas = this.regionMngr.getAnimalsInRange(this, a -> a.getGeneticCode() == Sheep.this.getGeneticCode());
+        if(!parejas.isEmpty()){
+            pareja =this.mateStrategy.select(this, parejas);
+            setMateStateAction();
+        }
+        return pareja;
+    }
+     Animal buscarPeligro(){
+         List<Animal> depredadores = new ArrayList<>();
+        Animal depredador = null;
+        depredadores = this.regionMngr.getAnimalsInRange(this, a -> a.getDiet() == Diet.CARNIVORE);
+        if(!depredadores.isEmpty()){
+            depredador =this.dangerStrategy.select(this, depredadores);
+            setDangerStateAction();
+        }
+        return depredador;
     }
 
     @Override
@@ -44,8 +67,8 @@ public class Sheep extends Animal{
         if(this.energy == Constantes.ENERGY_DEAD || this.age > Constantes.MAX_AGE_SHEEP){
             setDeadStateAction();
         }
-        if(this.state != State.DEAD){ //not sure
-            double newEnergy = this.energy + getFood(this, dt);
+        if(this.state != State.DEAD){
+            double newEnergy = this.energy + this.regionMngr.getFood(this, dt);
             if(newEnergy < Constantes.MAX_ENERGY && newEnergy > Constantes.ENERGY_DEAD){
                 this.energy = newEnergy;
             }

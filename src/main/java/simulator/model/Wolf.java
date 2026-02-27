@@ -1,6 +1,6 @@
 package simulator.model;
-
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import simulator.misc.Utils;
 import simulator.misc.Vector2D;
@@ -47,21 +47,31 @@ public class Wolf extends Animal{
             this.state = State.DEAD;
         }
         if(this.state != State.DEAD){ //not sure
-            double newEnergy = this.energy + getFood(this, dt);
+            double newEnergy = this.energy + this.regionMngr.getFood(this, dt);
             if(newEnergy < 100.0 && newEnergy > 0){
                 this.energy = newEnergy;
             }
         }
     }
     Animal buscarPresa(){
-        //pedir al gestor de regiones la lista de animales hervivoros en el campo visual usando el metodo getAnimalsInRange
-        // y despues elegir uno usando la estrategia de seleccion correspondiente. Si encuentra una presa, asignarla a huntTarget y cambiar el estado a HUNGER.
-         return null;
+        List<Animal> presas = new ArrayList<>();
+        Animal presa = null;
+        presas = this.regionMngr.getAnimalsInRange(this, a -> a.getDiet() == Diet.HERBIVORE);
+        if(!presas.isEmpty()){
+            presa =this.huntingStrategy.select(this, presas);
+            setHungerStateAction();
+        }
+        return presa;
     }
     Animal buscarPareja(){
-        //pedir al gestor de regiones la lista de animales con el mismo codigo genetico en el campo visual usando el metodo getAnimalsInRange
-        // y despues elegir uno usando la estrategia de seleccion correspondiente.
-        return null;
+         List<Animal> parejas = new ArrayList<>();
+        Animal pareja = null;
+        parejas = this.regionMngr.getAnimalsInRange(this, a -> a.getGeneticCode() == Wolf.this.getGeneticCode());
+        if(!parejas.isEmpty()){
+            pareja =this.mateStrategy.select(this, parejas);
+            setMateStateAction();
+        }
+        return pareja;
     }
     void avanza(double dt){
         if(this.dest.distanceTo(this.pos) < Constantes.COLLISION_RANGE){
