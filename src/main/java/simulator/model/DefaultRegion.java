@@ -1,12 +1,13 @@
 package simulator.model;
 
 
-public class DefaultRegion extends Region{ //pregunar si es extends region e implements food suplier y animal info
+public class DefaultRegion extends Region{ 
     public double getFood(AnimalInfo a, double dt){
         if(a.getDiet() == Diet.CARNIVORE){
             return 0.0;
         }
         else{
+            //Filtrar y count
             int n = 0;
             for (Animal animal : this.lista) { //preguntar
                 if (animal.getDiet() == Diet.HERBIVORE &&

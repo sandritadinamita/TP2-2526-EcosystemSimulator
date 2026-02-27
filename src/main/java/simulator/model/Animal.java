@@ -1,5 +1,8 @@
 package simulator.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONObject;
 
 import simulator.misc.Utils;
@@ -129,6 +132,17 @@ public abstract class Animal implements Entity, AnimalInfo{
             return true; 
         else return false;
     } 
+
+    Animal buscarPareja(){
+        List<Animal> parejas = new ArrayList<>();
+        Animal pareja = null;
+        parejas = this.regionMngr.getAnimalsInRange(this, a -> a.getGeneticCode().equals(this.getGeneticCode()));
+        if(!parejas.isEmpty()){
+            pareja =this.mateStrategy.select(this, parejas);
+            setMateStateAction();
+        }
+        return pareja;
+    }
 
     abstract protected void setNormalStateAction();
     abstract protected void setMateStateAction();

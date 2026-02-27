@@ -154,7 +154,6 @@ public class Wolf extends Animal{
                 if(!(this.isPregnant() || this.mateTarget.isPregnant())){//esto ns si esta bien PREGUNTAR
                     if(Utils.RAND.nextDouble() < Constantes.PREGNANT_PROBABILITY_WOLF){ //no se si esta bien
                         this.baby = new Wolf(this, mateTarget);
-                        //this.mateTarget.baby = this.baby; //preguntar
                     }
                 }
 
@@ -249,10 +248,7 @@ public class Wolf extends Animal{
     }
 
     @Override
-    protected void setDangerStateAction() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setDangerStateAction'");
-    }
+    protected void setDangerStateAction() {}
 
     @Override
     protected void setDeadStateAction() {

@@ -20,18 +20,9 @@ public class Sheep extends Animal{
         this.dangerStrategy = p1.dangerStrategy;
         this.dangerSource = null;
     }
-    Animal buscarPareja(){
-         List<Animal> parejas = new ArrayList<>();
-        Animal pareja = null;
-        parejas = this.regionMngr.getAnimalsInRange(this, a -> a.getGeneticCode() == Sheep.this.getGeneticCode());
-        if(!parejas.isEmpty()){
-            pareja =this.mateStrategy.select(this, parejas);
-            setMateStateAction();
-        }
-        return pareja;
-    }
-     Animal buscarPeligro(){
-         List<Animal> depredadores = new ArrayList<>();
+    
+    Animal buscarPeligro(){
+        List<Animal> depredadores = new ArrayList<>();
         Animal depredador = null;
         depredadores = this.regionMngr.getAnimalsInRange(this, a -> a.getDiet() == Diet.CARNIVORE);
         if(!depredadores.isEmpty()){
@@ -133,7 +124,7 @@ public class Sheep extends Animal{
             this.mateTarget = null;
         }
         if(this.mateTarget == null){
-            this.mateTarget = buscarPareja(); //Animal tentativeMate = mateStrategy.select(this, );
+            this.mateTarget = buscarPareja(); 
             if(this.mateTarget == null){
                 avanza(dt);
             }
@@ -146,11 +137,10 @@ public class Sheep extends Animal{
             this.desire = Utils.constrainValueInRange(desire + Constantes.DESIRE_INCREASE_RATE_SHEEP*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_DESIRE);
             if(this.mateTarget.getPosition().distanceTo(this.pos) < Constantes.COLLISION_RANGE){
                 this.desire = Constantes.DESIRE_INIT;
-                this.mateTarget.desire = Constantes.DESIRE_INIT; //deberiamos hacer un setdesire?
+                this.mateTarget.desire = Constantes.DESIRE_INIT; 
                 if(!this.isPregnant()){
                     if(Utils.RAND.nextDouble() < Constantes.PREGNANT_PROBABILITY_SHEEP){ 
                         this.baby = new Sheep(this, mateTarget);
-                        //this.mateTarget.baby = this.baby; //preguntar
                     }
                 }
                 else{

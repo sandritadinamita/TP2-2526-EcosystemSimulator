@@ -21,11 +21,9 @@ public class SheepBuilder extends Builder<Animal>{
     }
 
     protected void fillInData(JSONObject o) {
-        //JSONObject aux = new JSONObject();
 		o.put("mate_strategy", "estrategia para buscar pareja");
 		o.put("danger_strategy", "estrategia para huir cuando hay peligro");
 		o.put("pos", "posicion del animal");
-		//o.put("data", aux);
 	}
 
     @Override
@@ -44,7 +42,7 @@ public class SheepBuilder extends Builder<Animal>{
             JSONArray xRange = pos.getJSONArray("x_range");
 			JSONArray yRange = pos.getJSONArray("y_range");
 
-            if (xRange.length() < 2|| yRange.length() < 2)
+            if (xRange.length() < 2 || yRange.length() < 2)
 			throw new IllegalArgumentException("Rangos de posición inválidos, deben tener dos elementos cada uno");
 
 			double xmin = xRange.getDouble(0);
@@ -53,8 +51,8 @@ public class SheepBuilder extends Builder<Animal>{
 			double ymax = yRange.getDouble(1);
 
 
-            double x = Utils.RAND.nextDouble(xmin, xmax+1); //?
-            double y = Utils.RAND.nextDouble(ymin, ymax+1);
+            double x = Utils.RAND.nextDouble(xmin, xmax); 
+            double y = Utils.RAND.nextDouble(ymin, ymax);
 
 			position = new Vector2D(x, y);
         }

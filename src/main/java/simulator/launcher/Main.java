@@ -47,6 +47,8 @@ public class Main {
   //
   private static Double time = null;
   private static String inFile = null;
+  private static String outFile = null;
+
   private static ExecMode mode = ExecMode.BATCH;
 
   private static void parseArgs(String[] args) {
@@ -116,9 +118,9 @@ public class Main {
   }
 
   private static void parseOutFileOption(CommandLine line) throws ParseException {
-    inFile = line.getOptionValue("o");
+    outFile = line.getOptionValue("o");
     if (mode == ExecMode.BATCH && outFile == null) {
-      throw new ParseException("In batch mode an input configuration file is required");
+      throw new ParseException("In batch mode an output configuration file is required");
     }
   }
 
@@ -152,6 +154,7 @@ public class Main {
 
   private static void start_batch_mode() throws Exception {
     InputStream is = new FileInputStream(new File(inFile));
+    //run();
   }
 
   private static void start_GUI_mode() throws Exception {
@@ -171,6 +174,7 @@ public class Main {
     }
   }
 
+  
   public static void main(String[] args) {
     Utils.RAND.setSeed(2147483647l);
     try {

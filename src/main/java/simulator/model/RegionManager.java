@@ -37,7 +37,7 @@ public class RegionManager implements AnimalMapView{ //sin terminar
         this.animalRegion = new HashMap<>();
     }
 
-    void setRegion(int row, int col, Region r){ //preguntar si hay que borrar los animales de la region anterior
+    void setRegion(int row, int col, Region r){ 
         List<Animal> animals = this.regions[row][col].getAnimals();
         for(Animal a : animals){
             r.addAnimal(a);
@@ -81,10 +81,10 @@ public class RegionManager implements AnimalMapView{ //sin terminar
         }
     }
     public List<Animal> getAnimalsInRange(Animal a, Predicate<Animal> filter){
-        // lo hacemos cuando los filters mirar de sheep y wolf lo de campo de vision
+//recorrer solo las regiones en el campo de vision-> no tiene que estar la region completa en el campo visual   
         List<Animal> animals = new ArrayList<>();
-        for (int i= 0; i< rows; i++){
-            for(int j = 0; j< cols; j++){
+        for (int i= 0; i < rows; i++){
+            for(int j = 0; j < cols; j++){
                     for(Animal an : this.regions[i][j].getAnimals()){
                         if(filter.test(an) && an.getPosition().distanceTo(a.getPosition()) <= a.getSightRange()){
                             animals.add(an);
@@ -92,7 +92,7 @@ public class RegionManager implements AnimalMapView{ //sin terminar
                     }
                 }
             }
-            return animals;
+        return animals;
     }
 
 

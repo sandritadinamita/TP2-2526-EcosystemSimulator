@@ -75,12 +75,10 @@ public class Controller {
 
         PrintStream p = new PrintStream(out);
         JSONObject output = new JSONObject();
-	output.put("in", initState);
-	output.put("out", finalState);
+	    output.put("in", initState);
+	    output.put("out", finalState);
 
-	p.println(output.toString());
-
-
+	    p.println(output.toString());
     }
     
     private List<ObjInfo> toAnimalsInfo(List<? extends AnimalInfo> animals) {
