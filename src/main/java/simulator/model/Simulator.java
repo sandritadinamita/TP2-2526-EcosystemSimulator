@@ -27,7 +27,7 @@ public class Simulator implements JSONable {
         this.regionMngr.setRegion(row, col, r);
     }
 
-    void setRegion(int row, int col, JSONObject rJson){
+    public void setRegion(int row, int col, JSONObject rJson){ //PREGUNTAR
         Region R = factoriaRegiones.createInstance(rJson); 
         setRegion(row, col, R);
     }

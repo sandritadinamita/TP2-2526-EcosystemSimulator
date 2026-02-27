@@ -154,7 +154,7 @@ public class Wolf extends Animal{
                 if(!(this.isPregnant() || this.mateTarget.isPregnant())){//esto ns si esta bien PREGUNTAR
                     if(Utils.RAND.nextDouble() < Constantes.PREGNANT_PROBABILITY_WOLF){ //no se si esta bien
                         this.baby = new Wolf(this, mateTarget);
-                        this.mateTarget.baby = this.baby; //preguntar
+                        //this.mateTarget.baby = this.baby; //preguntar
                     }
                 }
 

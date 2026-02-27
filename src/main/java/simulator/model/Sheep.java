@@ -150,7 +150,7 @@ public class Sheep extends Animal{
                 if(!this.isPregnant()){
                     if(Utils.RAND.nextDouble() < Constantes.PREGNANT_PROBABILITY_SHEEP){ 
                         this.baby = new Sheep(this, mateTarget);
-                        this.mateTarget.baby = this.baby; //preguntar
+                        //this.mateTarget.baby = this.baby; //preguntar
                     }
                 }
                 else{

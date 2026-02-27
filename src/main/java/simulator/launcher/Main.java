@@ -41,6 +41,7 @@ public class Main {
   // default values for some parameters
   //
   private final static Double DEFAULT_TIME = 10.0; // in seconds
+  private final static Double DEFAULT_DELTATIME = 0.03;
 
   // some attributes to stores values corresponding to command-line parameters
   //
@@ -114,6 +115,13 @@ public class Main {
     }
   }
 
+  private static void parseOutFileOption(CommandLine line) throws ParseException {
+    inFile = line.getOptionValue("o");
+    if (mode == ExecMode.BATCH && outFile == null) {
+      throw new ParseException("In batch mode an input configuration file is required");
+    }
+  }
+
   private static void parseTimeOption(CommandLine line) throws ParseException {
     String t = line.getOptionValue("t", DEFAULT_TIME.toString());
     try {
@@ -121,6 +129,16 @@ public class Main {
       assert (time >= 0);
     } catch (Exception e) {
       throw new ParseException("Invalid value for time: " + t);
+    }
+  }
+
+  private static void parseDeltaTimeOption(CommandLine line) throws ParseException {
+    String dt = line.getOptionValue("dt", DEFAULT_DELTATIME.toString());
+    try {
+      time = Double.parseDouble(dt);
+      assert (time >= 0);
+    } catch (Exception e) {
+      throw new ParseException("Invalid value for delta_time: " + dt);
     }
   }
 
