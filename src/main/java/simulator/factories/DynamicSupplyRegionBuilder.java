@@ -7,7 +7,7 @@ import simulator.model.Region;
 
 public class DynamicSupplyRegionBuilder extends Builder<Region>{
 
-    public DynamicSupplyRegionBuilder(String typeTag, String desc) {
+    public DynamicSupplyRegionBuilder() {
         super("dynamic", " ");
     }
 

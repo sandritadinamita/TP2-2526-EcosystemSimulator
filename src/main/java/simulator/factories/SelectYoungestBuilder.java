@@ -7,7 +7,7 @@ import simulator.model.SelectionStrategy;
 
 public class SelectYoungestBuilder extends Builder<SelectionStrategy>{
 
-    public SelectYoungestBuilder(String typeTag, String desc) {
+    public SelectYoungestBuilder() {
         super("youngest", " ");
     }
 

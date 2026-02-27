@@ -252,8 +252,9 @@ public class Wolf extends Animal{
 
     @Override
     protected void setDeadStateAction() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setDeadStateAction'");
+        this.state = State.DEAD;
+        mateTarget = null;
+        huntTarget = null;
     }
     
 

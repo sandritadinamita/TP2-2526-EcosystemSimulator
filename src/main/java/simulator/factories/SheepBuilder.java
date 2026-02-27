@@ -16,8 +16,9 @@ public class SheepBuilder extends Builder<Animal>{
     SelectionStrategy dangerStrategy;
     Vector2D position;
 
-    public SheepBuilder(String typeTag, String desc) {
+    public SheepBuilder(Factory <SelectionStrategy> startegy){
         super("sheep", " ");
+        factory = startegy;
     }
 
     protected void fillInData(JSONObject o) {

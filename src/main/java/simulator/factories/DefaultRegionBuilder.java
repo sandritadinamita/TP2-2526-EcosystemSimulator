@@ -7,7 +7,7 @@ import simulator.model.Region;
 
 public class DefaultRegionBuilder extends Builder<Region>{
 
-    public DefaultRegionBuilder(String typeTag, String desc) {
+    public DefaultRegionBuilder() {
         super("default", " ");
     }
 

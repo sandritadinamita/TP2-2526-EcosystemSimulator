@@ -81,7 +81,6 @@ public class Sheep extends Animal{
     void updateNormal(double dt){
         avanza(dt);
         if(this.dangerSource == null){
-            //buscar nuevo animal peligroso;
             this.dangerSource = buscarPeligro();
         }
         if(this.dangerSource != null){
@@ -231,15 +230,12 @@ public class Sheep extends Animal{
     }
 
     @Override
-    protected void setHungerStateAction() {
-       //comprobar
-    }
+    protected void setHungerStateAction() {}
 
     @Override
     protected void setDangerStateAction() {
         this.state = State.DANGER;
         mateTarget = null;
-       //comprobar
     }
 
 

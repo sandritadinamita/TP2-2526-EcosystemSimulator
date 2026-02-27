@@ -7,7 +7,7 @@ import simulator.model.SelectionStrategy;
 
 public class SelectClosestBuilder extends Builder<SelectionStrategy>{
 
-    public SelectClosestBuilder(String typeTag, String desc) {
+    public SelectClosestBuilder() {// quite los strings xq creo q estaba mal pero lo comprobamos
         super("closest", " ");
     }
 

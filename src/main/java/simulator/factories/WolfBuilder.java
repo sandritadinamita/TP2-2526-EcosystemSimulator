@@ -18,8 +18,9 @@ public class WolfBuilder extends Builder<Animal>{
     SelectionStrategy dangerStrategy;
     Vector2D position;
 
-    public WolfBuilder(String typeTag, String desc) {
+    public WolfBuilder(Factory <SelectionStrategy> startegy) {
         super("wolf", " ");
+        factory = startegy;
     }
 
     protected void fillInData(JSONObject o) {

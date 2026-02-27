@@ -3,6 +3,10 @@ package simulator.launcher;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.plaf.synth.Region;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -14,7 +18,18 @@ import org.apache.commons.cli.ParseException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import simulator.factories.Builder;
+import simulator.factories.BuilderBasedFactory;
+import simulator.factories.DefaultRegionBuilder;
+import simulator.factories.DynamicSupplyRegionBuilder;
+import simulator.factories.Factory;
+import simulator.factories.SelectClosestBuilder;
+import simulator.factories.SelectFirstBuilder;
+import simulator.factories.SheepBuilder;
+import simulator.factories.WolfBuilder;
 import simulator.misc.Utils;
+import simulator.model.Animal;
+import simulator.model.SelectionStrategy;
 
 public class Main {
 
@@ -46,8 +61,10 @@ public class Main {
   // some attributes to stores values corresponding to command-line parameters
   //
   private static Double time = null;
+  private static Double deltaTime = null;
   private static String inFile = null;
   private static String outFile = null;
+  private static boolean viewer = false;
 
   private static ExecMode mode = ExecMode.BATCH;
 
@@ -110,6 +127,10 @@ public class Main {
     }
   }
 
+  private static void parseSimViewerOption(CommandLine line, Options cmdLineOptions) {
+        viewer = line.hasOption("sv");;
+  }
+
   private static void parseInFileOption(CommandLine line) throws ParseException {
     inFile = line.getOptionValue("i");
     if (mode == ExecMode.BATCH && inFile == null) {
@@ -138,13 +159,30 @@ public class Main {
     String dt = line.getOptionValue("dt", DEFAULT_DELTATIME.toString());
     try {
       time = Double.parseDouble(dt);
-      assert (time >= 0);
+      assert (deltaTime >= 0);
     } catch (Exception e) {
       throw new ParseException("Invalid value for delta_time: " + dt);
     }
   }
 
   private static void initFactories() {
+    //estrategias
+    List<Builder<SelectionStrategy>> selectionStrategyBuilders = new ArrayList<>();
+    selectionStrategyBuilders.add(new SelectFirstBuilder());
+    selectionStrategyBuilders.add(new SelectClosestBuilder());
+    selectionStrategyBuilders.add(new SelectFirstBuilder());
+    Factory<SelectionStrategy> selectionStrategyFactory = new BuilderBasedFactory<SelectionStrategy>(selectionStrategyBuilders);
+    //animales 
+    List<Builder<Animal>> animalsBuilders = new ArrayList<>();
+    animalsBuilders.add(new WolfBuilder(selectionStrategyFactory));
+    animalsBuilders.add(new SheepBuilder(selectionStrategyFactory));
+    Factory<Animal> animalsFactory = new BuilderBasedFactory<Animal>(animalsBuilders);
+    //regiones
+    List<Builder<Region>> regionsBuilders = new ArrayList<>();
+    regionsBuilders.add(new DefaultRegionBuilder());//ns xq da error 
+    regionsBuilders.add(new DynamicSupplyRegionBuilder());
+    Factory<Region> regionFactory = new BuilderBasedFactory<Region>(regionsBuilders);
+
   }
 
   private static JSONObject loadJSONFile(InputStream in) {
@@ -154,6 +192,7 @@ public class Main {
 
   private static void start_batch_mode() throws Exception {
     InputStream is = new FileInputStream(new File(inFile));
+    // falta
     //run();
   }
 
