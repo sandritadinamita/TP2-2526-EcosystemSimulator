@@ -61,10 +61,7 @@ public class Simulator implements JSONable {
            if(a.getState() ==State.DEAD){
                 animalesMuertos.add(a);
             }
-            //a.update(dt);
-            //this.regionMngr.updateAnimalRegion(a);
         }
-        //regionMngr.updateAllRegions(dt);
         for(Animal a: this.animals){
             if(a.isPregnant()){
                 Animal animalBaby = a.deliverBaby();
