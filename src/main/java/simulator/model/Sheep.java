@@ -13,6 +13,7 @@ public class Sheep extends Animal{
     public Sheep(SelectionStrategy mateStrategy, SelectionStrategy dangerStrategy,  Vector2D pos){
         super(Constantes.SHEEP_GENETIC_CODE, Diet.HERBIVORE, Constantes.INIT_SIGHT_SHEEP, Constantes.INIT_SPEED_SHEEP, mateStrategy, pos); 
         this.dangerStrategy = dangerStrategy;
+        this.dangerSource = null;
     }
 
     protected Sheep(Sheep p1, Animal p2){
@@ -119,7 +120,7 @@ public class Sheep extends Animal{
     }
 
     void updateMate(double dt){
-        if(this.mateTarget != null && (this.state == State.DEAD || this.pos.distanceTo(this.mateTarget.getPosition()) > this.sightRange)){
+        if(this.mateTarget != null && (mateTarget.getState() == State.DEAD || this.pos.distanceTo(this.mateTarget.getPosition()) > this.sightRange)){
             this.mateTarget = null;
         }
         if(this.mateTarget == null){
