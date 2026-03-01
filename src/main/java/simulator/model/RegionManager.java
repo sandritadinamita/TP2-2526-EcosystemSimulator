@@ -55,8 +55,6 @@ public class RegionManager implements AnimalMapView {
         Vector2D pos = a.getPosition();
         int row = (int) Math.floor(pos.getY()/mapHeight);
         int col = (int) Math.floor(pos.getX()/mapWidth);
-        //int row = (int) Math.floor(pos.getY()/regionHeight); //cambio map -> region
-        //int col = (int) Math.floor(pos.getX()/regionWidth);
         Region r = this.regions[row][col];
         r.addAnimal(a);
         this.animalRegion.put(a, r);
@@ -68,10 +66,8 @@ public class RegionManager implements AnimalMapView {
 
     void updateAnimalRegion(Animal a){
         Vector2D pos = a.getPosition();
-        int row = (int) Math.floor(pos.getY()/mapHeight); //cambio map -> region
+        int row = (int) Math.floor(pos.getY()/mapHeight); 
         int col = (int) Math.floor(pos.getX()/mapWidth);
-        //int row = (int) Math.floor(pos.getY()/regionHeight); //cambio map -> region
-        //int col = (int) Math.floor(pos.getX()/regionWidth);
         Region r = this.regions[row][col];
         if(r != this.animalRegion.get(a)){
             r.addAnimal(a);
@@ -92,7 +88,6 @@ public class RegionManager implements AnimalMapView {
     }
     
     public List<Animal> getAnimalsInRange(Animal a, Predicate<Animal> filter){
-//recorrer solo las regiones en el campo de vision-> no tiene que estar la region completa en el campo visual
         double x = a.getPosition().getX();
         double y = a.getPosition().getY();
         double sRange = a.getSightRange();

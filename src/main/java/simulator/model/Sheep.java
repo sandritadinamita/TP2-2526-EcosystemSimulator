@@ -105,7 +105,7 @@ public class Sheep extends Animal{
             this.energy = Utils.constrainValueInRange(energy - Constantes.FOOD_DROP_RATE_SHEEP*Constantes.FOOD_DROP_BOOST_FACTOR_SHEEP*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY);
             this.desire = Utils.constrainValueInRange(desire + Constantes.DESIRE_INCREASE_RATE_SHEEP*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY);
         }
-        if(this.dangerSource == null || this.pos.distanceTo(this.dangerSource.getPosition()) > this.sightRange){ //COMPROBAR
+        if(this.dangerSource == null || this.pos.distanceTo(this.dangerSource.getPosition()) > this.sightRange){ 
             this.dangerSource = buscarPeligro();
             if(this.dangerSource == null){
                 if(this.desire > Constantes.DESIRE_THRESHOLD_SHEEP){

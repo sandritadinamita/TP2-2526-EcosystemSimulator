@@ -200,7 +200,6 @@ public class Main {
     animalsFactory = new BuilderBasedFactory<Animal>(animalsBuilders);
     //regiones
     List<Builder<Region>> regionsBuilders = new ArrayList<>();
-    //regionsBuilders.add(new DefaultRegionBuilder());//ns xq da error
     regionsBuilders.add(new DefaultRegionBuilder());
     regionsBuilders.add(new DynamicSupplyRegionBuilder());
     regionFactory = new BuilderBasedFactory<Region>(regionsBuilders);

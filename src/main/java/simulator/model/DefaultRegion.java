@@ -7,9 +7,8 @@ public class DefaultRegion extends Region{
             return 0.0;
         }
         else{
-            //Filtrar y count
             int n = 0;
-            for (Animal animal : this.lista) { //preguntar
+            for (Animal animal : this.lista) { 
                 if (animal.getDiet() == Diet.HERBIVORE &&
                     animal.getState() != State.DEAD) {
                     n++;

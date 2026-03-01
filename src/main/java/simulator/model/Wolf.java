@@ -149,14 +149,13 @@ public class Wolf extends Animal{
             if(this.getPosition().distanceTo(this.mateTarget.getPosition())< Constantes.COLLISION_RANGE){
                 this.desire = 0.0;
                 this.mateTarget.desire = 0.0;
-                if(!(this.isPregnant() || this.mateTarget.isPregnant())){//esto ns si esta bien PREGUNTAR
-                    if(Utils.RAND.nextDouble() < Constantes.PREGNANT_PROBABILITY_WOLF){ //no se si esta bien
+                if(!(this.isPregnant() || this.mateTarget.isPregnant())){
+                    if(Utils.RAND.nextDouble() < Constantes.PREGNANT_PROBABILITY_WOLF){ 
                         this.baby = new Wolf(this, mateTarget);
                     }
                 }
 
                 this.energy = Utils.constrainValueInRange(this.energy - Constantes.FOOD_DROP_DESIRE_WOLF,Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY);
-                ///ns si lo de la ebergia hay q hacerlo al mate target tambien
                 this.mateTarget = null;
             }
         }
