@@ -28,7 +28,7 @@ public class Wolf extends Animal{
             case NORMAL:
                 updateNormal(dt);
                 break;
-            case HUNGER:
+            case DANGER:
                 updateHunger(dt);
                 break;
             case MATE:
@@ -38,7 +38,7 @@ public class Wolf extends Animal{
                 break;
         }
         if(!isPosEnMapa(this.getPosition())){
-            ajustarPosicionDentroMapa(this.pos);
+            this.pos = ajustarPosicionDentroMapa(this.pos);
             setNormalStateAction();
         }
         if(this.energy == 0.0 || this.age > 14.0){
@@ -130,7 +130,7 @@ public class Wolf extends Animal{
 
     void updateMate(double dt){
         //1
-        if((this.mateTarget != null && this.mateTarget.getState() == State.DEAD)|| this.pos.distanceTo(this.mateTarget.getPosition()) > this.sightRange){
+        if(this.mateTarget != null && (this.mateTarget.getState() == State.DEAD || this.pos.distanceTo(this.mateTarget.getPosition()) > this.sightRange)){
             this.mateTarget = null;
         }
         //2

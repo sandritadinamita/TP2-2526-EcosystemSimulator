@@ -26,6 +26,7 @@ import simulator.factories.DynamicSupplyRegionBuilder;
 import simulator.factories.Factory;
 import simulator.factories.SelectClosestBuilder;
 import simulator.factories.SelectFirstBuilder;
+import simulator.factories.SelectYoungestBuilder;
 import simulator.factories.SheepBuilder;
 import simulator.factories.WolfBuilder;
 import simulator.misc.Utils;
@@ -190,6 +191,7 @@ public class Main {
     selectionStrategyBuilders.add(new SelectFirstBuilder());
     selectionStrategyBuilders.add(new SelectClosestBuilder());
     selectionStrategyBuilders.add(new SelectFirstBuilder());
+    selectionStrategyBuilders.add(new SelectYoungestBuilder());
     selectionStrategyFactory = new BuilderBasedFactory<SelectionStrategy>(selectionStrategyBuilders);
     //animales 
     List<Builder<Animal>> animalsBuilders = new ArrayList<>();

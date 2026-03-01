@@ -51,7 +51,7 @@ public class Sheep extends Animal{
                 break;
         }        
         if(!isPosEnMapa(this.getPosition())){
-            ajustarPosicionDentroMapa(this.pos);
+            this.pos = ajustarPosicionDentroMapa(this.pos);
             this.state = State.NORMAL;
             setNormalStateAction();
         }
