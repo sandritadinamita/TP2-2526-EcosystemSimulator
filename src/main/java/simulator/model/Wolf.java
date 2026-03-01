@@ -28,7 +28,7 @@ public class Wolf extends Animal{
             case NORMAL:
                 updateNormal(dt);
                 break;
-            case DANGER:
+            case HUNGER:
                 updateHunger(dt);
                 break;
             case MATE:
@@ -77,7 +77,7 @@ public class Wolf extends Animal{
         }
         move(speed*dt*Math.exp((energy-Constantes.MAX_ENERGY)*Constantes.HUNGER_DECAY_EXP_FACTOR));
         this.age = age + dt;
-        this.energy = Utils.constrainValueInRange(energy + Constantes.FOOD_DROP_RATE_WOLF*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY);
+        this.energy = Utils.constrainValueInRange(energy - Constantes.FOOD_DROP_RATE_WOLF*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY); // - en vez de +
         this.desire = Utils.constrainValueInRange(desire + Constantes.DESIRE_INCREASE_RATE_WOLF*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY);
     }
 
@@ -109,12 +109,12 @@ public class Wolf extends Animal{
             this.dest = huntTarget.getPosition();
             move(Constantes.BOOST_FACTOR_WOLF*speed*dt*Math.exp((energy-Constantes.MAX_ENERGY)*Constantes.HUNGER_DECAY_EXP_FACTOR));
             this.age = age + dt;
-            this.energy = Utils.constrainValueInRange(energy + Constantes.FOOD_DROP_RATE_WOLF*Constantes.FOOD_DROP_BOOST_FACTOR_WOLF*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY);
+            this.energy = Utils.constrainValueInRange(energy - Constantes.FOOD_DROP_RATE_WOLF*Constantes.FOOD_DROP_BOOST_FACTOR_WOLF*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY); //- en vez de +
             this.desire = Utils.constrainValueInRange(desire + Constantes.DESIRE_INCREASE_RATE_WOLF*dt, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_DESIRE);
             if(this.getPosition().distanceTo(this.huntTarget.getPosition())< Constantes.COLLISION_RANGE){
                 this.huntTarget.state = State.DEAD;
                 this.huntTarget = null;
-                this.energy = Utils.constrainValueInRange(energy + Constantes.FOOD_EAT_VALUE_WOLF, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY); 
+                this.energy = Utils.constrainValueInRange(energy + Constantes.FOOD_EAT_VALUE_WOLF, Constantes.MIN_DESIRE_ENERGY, Constantes.MAX_ENERGY); // - en vez de mas
             }
         }
         //3

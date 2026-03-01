@@ -48,7 +48,7 @@ public abstract class Animal implements Entity, AnimalInfo{
         this.mateTarget = null;
         this.baby = null;
         this.regionMngr = null;
-        this.age = 0.0;
+        //this.age = 0.0;
 
     }
 
@@ -66,7 +66,7 @@ public abstract class Animal implements Entity, AnimalInfo{
         this.pos = p1.getPosition().plus(Vector2D.getRandomVector(-1,1).scale(60.0*(Utils.RAND.nextGaussian()+1)));
         this.sightRange = Utils.getRandomizedParameter((p1.getSightRange()+p2.getSightRange())/2,0.2);
         this.speed = Utils.getRandomizedParameter((p1.getSpeed()+p2.getSpeed())/2, 0.2);
-        this.age = 0.0;
+        //this.age = 0.0;
 
     }
 
