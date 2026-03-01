@@ -17,7 +17,7 @@ public class SheepBuilder extends Builder<Animal>{
     Vector2D position;
 
     public SheepBuilder(Factory <SelectionStrategy> startegy){
-        super("sheep", " ");
+        super("sheep", "sheep");
         factory = startegy;
     }
 

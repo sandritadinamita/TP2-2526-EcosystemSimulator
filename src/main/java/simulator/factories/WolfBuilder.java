@@ -18,7 +18,7 @@ public class WolfBuilder extends Builder<Animal>{
     Vector2D position;
 
     public WolfBuilder(Factory <SelectionStrategy> startegy) {
-        super("wolf", " ");
+        super("wolf", "wolf");
         factory = startegy;
     }
 

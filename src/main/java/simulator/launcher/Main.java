@@ -35,9 +35,9 @@ import simulator.model.SelectionStrategy;
 import simulator.model.Simulator;
 
 public class Main {
-  public static Factory<SelectionStrategy> strategyFactory;
+  public static Factory<SelectionStrategy> selectionStrategyFactory;
 	public static Factory<Animal> animalsFactory;
-	public static Factory<simulator.model.Region> regionFactory;// no entiendo q le pasa
+	public static Factory<simulator.model.Region> regionFactory;
 
 
   private enum ExecMode {
@@ -88,7 +88,10 @@ public class Main {
       CommandLine line = parser.parse(cmdLineOptions, args);
       parseHelpOption(line, cmdLineOptions);
       parseInFileOption(line);
+      parseOutFileOption(line);
       parseTimeOption(line);
+      parseDeltaTimeOption(line);
+      parseSimViewerOption(line, cmdLineOptions);
 
       // if there are some remaining arguments, then something wrong is
       // provided in the command line!
@@ -116,12 +119,21 @@ public class Main {
 
     // input file
     cmdLineOptions.addOption(Option.builder("i").longOpt("input").hasArg().desc("A configuration file.").build());
+    cmdLineOptions.addOption(Option.builder("o").longOpt("output").hasArg().desc("Output file, where output is written.").build());
 
     // steps
     cmdLineOptions.addOption(Option.builder("t").longOpt("time").hasArg()
-      .desc("An real number representing the total simulation time in seconds. Default value: "
+      .desc("A double representing actual time, in seconds, per simulation step. Default value: "
+        + DEFAULT_DELTATIME + ".")
+      .build());
+
+    cmdLineOptions.addOption(Option.builder("dt").longOpt("delta-time").hasArg()
+      .desc("A double representing actsimulation time in seconds. Default value: "
         + DEFAULT_TIME + ".")
       .build());
+
+    cmdLineOptions.addOption(Option.builder("sv").longOpt("simple-viewer").desc("Show the viewer window in console mode.").build());
+
 
     return cmdLineOptions;
   }
@@ -178,18 +190,18 @@ public class Main {
     selectionStrategyBuilders.add(new SelectFirstBuilder());
     selectionStrategyBuilders.add(new SelectClosestBuilder());
     selectionStrategyBuilders.add(new SelectFirstBuilder());
-    Factory<SelectionStrategy> selectionStrategyFactory = new BuilderBasedFactory<SelectionStrategy>(selectionStrategyBuilders);
+    selectionStrategyFactory = new BuilderBasedFactory<SelectionStrategy>(selectionStrategyBuilders);
     //animales 
     List<Builder<Animal>> animalsBuilders = new ArrayList<>();
     animalsBuilders.add(new WolfBuilder(selectionStrategyFactory));
     animalsBuilders.add(new SheepBuilder(selectionStrategyFactory));
-    Factory<Animal> animalsFactory = new BuilderBasedFactory<Animal>(animalsBuilders);
+    animalsFactory = new BuilderBasedFactory<Animal>(animalsBuilders);
     //regiones
     List<Builder<Region>> regionsBuilders = new ArrayList<>();
     //regionsBuilders.add(new DefaultRegionBuilder());//ns xq da error
     regionsBuilders.add(new DefaultRegionBuilder());
     regionsBuilders.add(new DynamicSupplyRegionBuilder());
-    Factory<Region> regionFactory = new BuilderBasedFactory<Region>(regionsBuilders);
+    regionFactory = new BuilderBasedFactory<Region>(regionsBuilders);
   }
 
   private static JSONObject loadJSONFile(InputStream in) {

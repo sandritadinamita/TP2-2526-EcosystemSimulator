@@ -19,6 +19,7 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 	}
 
 	public BuilderBasedFactory(List<Builder<T>> builders) {
+		this();
     	for(Builder<T> b : builders){
 			this.addBuilder(b);
 		}

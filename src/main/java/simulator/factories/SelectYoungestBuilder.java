@@ -8,7 +8,7 @@ import simulator.model.SelectionStrategy;
 public class SelectYoungestBuilder extends Builder<SelectionStrategy>{
 
     public SelectYoungestBuilder() {
-        super("youngest", " ");
+        super("youngest", "Selecciona el animal más joven");
     }
 
     @Override

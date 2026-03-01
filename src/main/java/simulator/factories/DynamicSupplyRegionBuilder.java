@@ -8,7 +8,7 @@ import simulator.model.Region;
 public class DynamicSupplyRegionBuilder extends Builder<Region>{
 
     public DynamicSupplyRegionBuilder() {
-        super("dynamic", " ");
+        super("dynamic", "dynamic supply region");
     }
 
     protected void fillInData(JSONObject o) {
