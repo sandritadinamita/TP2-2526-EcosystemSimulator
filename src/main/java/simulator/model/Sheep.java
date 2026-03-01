@@ -92,7 +92,7 @@ public class Sheep extends Animal{
     }
 
     void updateDanger(double dt){
-        if(this.dangerSource != null && this.state == State.DEAD){
+        if(this.dangerSource != null && dangerSource.getState() == State.DEAD){
             this.dangerSource = null;
         }
         if(this.dangerSource == null){
