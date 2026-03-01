@@ -37,7 +37,7 @@ import simulator.model.Simulator;
 public class Main {
   public static Factory<SelectionStrategy> selectionStrategyFactory;
 	public static Factory<Animal> animalsFactory;
-	public static Factory<simulator.model.Region> regionFactory;
+	public static Factory<Region> regionFactory;
 
 
   private enum ExecMode {

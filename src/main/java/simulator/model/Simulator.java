@@ -52,27 +52,34 @@ public class Simulator implements JSONable {
         return this.tiempo;
     }
     public void advance(double dt){
-        List<Animal> animalesMuertos = new ArrayList<>();
+        List<Animal> animalesMuertos = new ArrayList<Animal>();
+         List<Animal> babies = new ArrayList<Animal>();
         tiempo += dt;
         for (Animal a: this.animals){
-            if(a.getState() ==State.DEAD){
+            a.update(dt);
+            this.regionMngr.updateAnimalRegion(a);
+           if(a.getState() ==State.DEAD){
                 animalesMuertos.add(a);
-                a.update(dt);
-                this.regionMngr.updateAnimalRegion(a);
             }
+            //a.update(dt);
+            //this.regionMngr.updateAnimalRegion(a);
         }
-        regionMngr.updateAllRegions(dt);
+        //regionMngr.updateAllRegions(dt);
         for(Animal a: this.animals){
             if(a.isPregnant()){
                 Animal animalBaby = a.deliverBaby();
-                addAnimal(animalBaby);
+                babies.add(animalBaby);
             }
 
+        }
+        for(Animal a: babies){
+            addAnimal(a);
         }
         for(Animal a: animalesMuertos){
             animals.remove(a);
             this.regionMngr.unregisterAnimal(a);
         }
+        regionMngr.updateAllRegions(dt);
 
     }
     public JSONObject asJSON(){

@@ -28,7 +28,7 @@ public class Wolf extends Animal{
             case NORMAL:
                 updateNormal(dt);
                 break;
-            case DANGER:
+            case HUNGER:
                 updateHunger(dt);
                 break;
             case MATE:

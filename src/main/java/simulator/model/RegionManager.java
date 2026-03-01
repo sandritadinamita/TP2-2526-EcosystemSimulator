@@ -55,6 +55,8 @@ public class RegionManager implements AnimalMapView {
         Vector2D pos = a.getPosition();
         int row = (int) Math.floor(pos.getY()/mapHeight);
         int col = (int) Math.floor(pos.getX()/mapWidth);
+        //int row = (int) Math.floor(pos.getY()/regionHeight); //cambio map -> region
+        //int col = (int) Math.floor(pos.getX()/regionWidth);
         Region r = this.regions[row][col];
         r.addAnimal(a);
         this.animalRegion.put(a, r);
@@ -65,9 +67,11 @@ public class RegionManager implements AnimalMapView {
     }
 
     void updateAnimalRegion(Animal a){
-         Vector2D pos = a.getPosition();
+        Vector2D pos = a.getPosition();
         int row = (int) Math.floor(pos.getY()/mapHeight); //cambio map -> region
         int col = (int) Math.floor(pos.getX()/mapWidth);
+        //int row = (int) Math.floor(pos.getY()/regionHeight); //cambio map -> region
+        //int col = (int) Math.floor(pos.getX()/regionWidth);
         Region r = this.regions[row][col];
         if(r != this.animalRegion.get(a)){
             r.addAnimal(a);
@@ -95,7 +99,11 @@ public class RegionManager implements AnimalMapView {
         int minRow = (int) Math.floor((y-sRange)/mapHeight);
         int maxRow = (int) Math.floor((y+sRange)/mapHeight);
         int minCol = (int) Math.floor((x-sRange)/mapWidth);
-        int maxCol = (int) Math.floor((x+sRange)/mapWidth); 
+        int maxCol = (int) Math.floor((x+sRange)/mapWidth);
+        minCol = Math.max(0, minCol);
+        minRow = Math.max(0, minRow);
+        maxCol = Math.min(cols - 1, maxCol);
+        maxRow = Math.min(rows - 1, maxRow);
 
         List<Animal> animals = new ArrayList<>();
         for (int i= minRow; i <= maxRow; i++){

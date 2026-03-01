@@ -70,7 +70,7 @@ public class Controller {
             if (sv) view.update(toAnimalsInfo(sim.getAnimals()), sim.getTime(), dt);
         }
         JSONObject finalState = sim.asJSON();
-        if (sv) view.close();
+        //if (sv) view.close();
 
         PrintStream p = new PrintStream(out);
         JSONObject output = new JSONObject();
@@ -78,6 +78,7 @@ public class Controller {
 	    output.put("out", finalState);
 
 	    p.println(output.toString());
+        if (sv) view.close();
     }
     
     private List<ObjInfo> toAnimalsInfo(List<? extends AnimalInfo> animals) {

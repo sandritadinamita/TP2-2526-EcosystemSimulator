@@ -119,7 +119,7 @@ public class Sheep extends Animal{
     }
 
     void updateMate(double dt){
-        if(this.mateTarget != null && (this.state == State.DEAD || this.pos.distanceTo(this.dangerSource.getPosition()) > this.sightRange)){
+        if(this.mateTarget != null && (this.state == State.DEAD || this.pos.distanceTo(this.mateTarget.getPosition()) > this.sightRange)){
             this.mateTarget = null;
         }
         if(this.mateTarget == null){
