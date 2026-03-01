@@ -61,16 +61,7 @@ public class Wolf extends Animal{
         }
         return presa;
     }
-    Animal buscarPareja(){
-        List<Animal> parejas = new ArrayList<>();
-        Animal pareja = null;
-        parejas = this.regionMngr.getAnimalsInRange(this, a -> a.getGeneticCode() == Wolf.this.getGeneticCode());
-        if(!parejas.isEmpty()){
-            pareja = this.mateStrategy.select(this, parejas);
-            setMateStateAction();
-        }
-        return pareja;
-    }
+
     void avanza(double dt){
         if(this.dest.distanceTo(this.pos) < Constantes.COLLISION_RANGE){
             this.dest = this.getPosition().plus(Vector2D.getRandomVector(-1,1).scale(Constantes.NEARBY_FACTOR*(Utils.RAND.nextGaussian()+1)));
