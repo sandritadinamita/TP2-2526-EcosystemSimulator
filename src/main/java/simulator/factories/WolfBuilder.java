@@ -9,7 +9,6 @@ import simulator.misc.Vector2D;
 import simulator.model.Animal;
 import simulator.model.SelectFirst;
 import simulator.model.SelectionStrategy;
-import simulator.model.Sheep;
 import simulator.model.Wolf;
 
 public class WolfBuilder extends Builder<Animal>{

@@ -2,7 +2,9 @@ package simulator.launcher;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,7 @@ import org.apache.commons.cli.ParseException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import simulator.control.Controller;
 import simulator.factories.Builder;
 import simulator.factories.BuilderBasedFactory;
 import simulator.factories.DefaultRegionBuilder;
@@ -30,8 +33,14 @@ import simulator.factories.WolfBuilder;
 import simulator.misc.Utils;
 import simulator.model.Animal;
 import simulator.model.SelectionStrategy;
+import simulator.model.Region;
+import simulator.model.Simulator;
 
 public class Main {
+  public static Factory<SelectionStrategy> strategyFactory;
+	public static Factory<Animal> animalsFactory;
+	public static Factory<simulator.model.Region> regionFactory;// no entiendo q le pasa
+
 
   private enum ExecMode {
     BATCH("batch", "Batch mode"), GUI("gui", "Graphical User Interface mode");
@@ -128,7 +137,7 @@ public class Main {
   }
 
   private static void parseSimViewerOption(CommandLine line, Options cmdLineOptions) {
-        viewer = line.hasOption("sv");;
+      viewer = line.hasOption("sv");;
   }
 
   private static void parseInFileOption(CommandLine line) throws ParseException {
@@ -179,7 +188,8 @@ public class Main {
     Factory<Animal> animalsFactory = new BuilderBasedFactory<Animal>(animalsBuilders);
     //regiones
     List<Builder<Region>> regionsBuilders = new ArrayList<>();
-    regionsBuilders.add(new DefaultRegionBuilder());//ns xq da error 
+    //regionsBuilders.add(new DefaultRegionBuilder());//ns xq da error
+    regionsBuilders.add(new DefaultRegionBuilder());
     regionsBuilders.add(new DynamicSupplyRegionBuilder());
     Factory<Region> regionFactory = new BuilderBasedFactory<Region>(regionsBuilders);
 
@@ -192,8 +202,17 @@ public class Main {
 
   private static void start_batch_mode() throws Exception {
     InputStream is = new FileInputStream(new File(inFile));
-    // falta
-    //run();
+    OutputStream os = new FileOutputStream(new File(outFile));
+    JSONObject inputData = loadJSONFile(is);
+    int w = inputData.getInt("width");
+    int h = inputData.getInt("height");
+    int c = inputData.getInt("rows");
+    int e = inputData.getInt("cols");
+    Simulator sim = new Simulator(w, h, c, e, animalsFactory, regionFactory);
+    Controller control = new Controller(sim);
+    control.loadData(inputData);
+    control.run(time, deltaTime, viewer, os);
+    os.close();
   }
 
   private static void start_GUI_mode() throws Exception {

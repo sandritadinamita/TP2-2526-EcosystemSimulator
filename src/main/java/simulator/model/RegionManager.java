@@ -81,10 +81,18 @@ public class RegionManager implements AnimalMapView{ //sin terminar
         }
     }
     public List<Animal> getAnimalsInRange(Animal a, Predicate<Animal> filter){
-//recorrer solo las regiones en el campo de vision-> no tiene que estar la region completa en el campo visual   
+//recorrer solo las regiones en el campo de vision-> no tiene que estar la region completa en el campo visual
+        double x = a.getPosition().getX();
+        double y = a.getPosition().getY();
+        double sRange = a.getSightRange();
+        int minRow = (int) Math.floor((y-sRange)/mapHeight);
+        int maxRow = (int) Math.floor((y+sRange)/mapHeight);
+        int minCol = (int) Math.floor((x-sRange)/mapWidth);
+        int maxCol = (int) Math.floor((x+sRange)/mapWidth); 
+
         List<Animal> animals = new ArrayList<>();
-        for (int i= 0; i < rows; i++){
-            for(int j = 0; j < cols; j++){
+        for (int i= minRow; i <= maxRow; i++){
+            for(int j = minCol; j <= maxCol; j++){
                     for(Animal an : this.regions[i][j].getAnimals()){
                         if(filter.test(an) && an.getPosition().distanceTo(a.getPosition()) <= a.getSightRange()){
                             animals.add(an);
