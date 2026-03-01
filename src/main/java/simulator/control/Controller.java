@@ -8,7 +8,6 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import netscape.javascript.JSObject;
 import simulator.model.AnimalInfo;
 import simulator.model.MapInfo;
 import simulator.model.Simulator;

@@ -23,9 +23,9 @@ public class WolfBuilder extends Builder<Animal>{
     }
 
     protected void fillInData(JSONObject o) {
-		o.put("mate_strategy", "estrategía para buscar pareja");
-		o.put("hunt_strategy", "estrategía para cazar presas");
-		o.put("pos", "posicion del animal");
+		o.put("mate_strategy", "estrategia para buscar pareja");
+		o.put("hunt_strategy", "estrategia para cazar presas");
+		o.put("pos", "posición del animal");
 	}
 
 

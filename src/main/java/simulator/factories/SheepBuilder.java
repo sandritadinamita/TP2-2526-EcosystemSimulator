@@ -24,7 +24,7 @@ public class SheepBuilder extends Builder<Animal>{
     protected void fillInData(JSONObject o) {
 		o.put("mate_strategy", "estrategia para buscar pareja");
 		o.put("danger_strategy", "estrategia para huir cuando hay peligro");
-		o.put("pos", "posicion del animal");
+		o.put("pos", "posición del animal");
 	}
 
     @Override

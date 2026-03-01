@@ -19,20 +19,14 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 	}
 
 	public BuilderBasedFactory(List<Builder<T>> builders) {
-
-       // call addBuilder(b) for each builder b in builder
-       for(Builder<T> b : builders){
-		this.addBuilder(b);
-	   }
+    	for(Builder<T> b : builders){
+			this.addBuilder(b);
+		}
 	}
 
 	public void addBuilder(Builder<T> b) {
-      // add an entry "b.getTypeTag() |−> b" to builders.
-      // ...
-	  this.builders.put(b.getTypeTag(), b);
-      // add b.getInfo() to buildersInfo
-      // ...
-	  this.buildersInfo.add(b.getInfo()); //ns si esta bien
+		this.builders.put(b.getTypeTag(), b);
+		this.buildersInfo.add(b.getInfo()); 
 	}
 
 	@Override
@@ -42,7 +36,7 @@ public class BuilderBasedFactory<T> implements Factory<T> {
 		}
 		String type = info.getString("type");
 		Builder<T> builder = this.builders.get(type);
-		if(builder != null){ //ns si esta bien
+		if(builder != null){ 
 			T result = builder.createInstance(info.has("data") ? info.getJSONObject("data") : new JSONObject());
 			if(result != null){
 				return result;

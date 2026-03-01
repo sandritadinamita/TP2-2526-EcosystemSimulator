@@ -11,7 +11,7 @@ import org.json.JSONObject;
 
 import simulator.misc.Vector2D;
 
-public class RegionManager implements AnimalMapView{ //sin terminar
+public class RegionManager implements AnimalMapView { 
     private int mapWidth;
     private int mapHeight;
     private int cols;
@@ -80,6 +80,7 @@ public class RegionManager implements AnimalMapView{ //sin terminar
             }
         }
     }
+    
     public List<Animal> getAnimalsInRange(Animal a, Predicate<Animal> filter){
 //recorrer solo las regiones en el campo de vision-> no tiene que estar la region completa en el campo visual
         double x = a.getPosition().getX();

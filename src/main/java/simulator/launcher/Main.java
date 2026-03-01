@@ -8,8 +8,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.plaf.synth.Region;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -32,8 +30,8 @@ import simulator.factories.SheepBuilder;
 import simulator.factories.WolfBuilder;
 import simulator.misc.Utils;
 import simulator.model.Animal;
-import simulator.model.SelectionStrategy;
 import simulator.model.Region;
+import simulator.model.SelectionStrategy;
 import simulator.model.Simulator;
 
 public class Main {
@@ -137,7 +135,7 @@ public class Main {
   }
 
   private static void parseSimViewerOption(CommandLine line, Options cmdLineOptions) {
-      viewer = line.hasOption("sv");;
+    viewer = line.hasOption("sv");;
   }
 
   private static void parseInFileOption(CommandLine line) throws ParseException {
@@ -192,7 +190,6 @@ public class Main {
     regionsBuilders.add(new DefaultRegionBuilder());
     regionsBuilders.add(new DynamicSupplyRegionBuilder());
     Factory<Region> regionFactory = new BuilderBasedFactory<Region>(regionsBuilders);
-
   }
 
   private static JSONObject loadJSONFile(InputStream in) {

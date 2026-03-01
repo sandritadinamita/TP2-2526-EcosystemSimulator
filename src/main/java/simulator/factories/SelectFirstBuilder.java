@@ -7,7 +7,7 @@ import simulator.model.SelectionStrategy;
 
 public class SelectFirstBuilder extends Builder<SelectionStrategy>{
 
-    public SelectFirstBuilder() {// quite los strings xq creo q estaba mal pero lo comprobamos 
+    public SelectFirstBuilder() { 
         super("first", " ");
     }
 

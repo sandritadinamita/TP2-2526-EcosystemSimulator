@@ -6,7 +6,6 @@ import simulator.misc.Utils;
 import simulator.misc.Vector2D;
 
 public class Wolf extends Animal{
-    //Es un animal carnívoro con código genético "Wolf". Es un animal que caza a otros animales herbívoros y también puede comer lo que proporciona la región en la que está, y puede emparejarse con otros animales con el mismo código genético.
     private Animal huntTarget;
     private SelectionStrategy huntingStrategy;
 
@@ -25,7 +24,6 @@ public class Wolf extends Animal{
         if(this.state == State.DEAD){
             return;
         }
-        //Actualizar el objeto según el estado del animal (ver la descripción abajo).
         switch(this.state){
             case NORMAL:
                 updateNormal(dt);
@@ -46,7 +44,7 @@ public class Wolf extends Animal{
         if(this.energy == 0.0 || this.age > 14.0){
             this.state = State.DEAD;
         }
-        if(this.state != State.DEAD){ //not sure
+        if(this.state != State.DEAD){ 
             double newEnergy = this.energy + this.regionMngr.getFood(this, dt);
             if(newEnergy < 100.0 && newEnergy > 0){
                 this.energy = newEnergy;
@@ -58,17 +56,17 @@ public class Wolf extends Animal{
         Animal presa = null;
         presas = this.regionMngr.getAnimalsInRange(this, a -> a.getDiet() == Diet.HERBIVORE);
         if(!presas.isEmpty()){
-            presa =this.huntingStrategy.select(this, presas);
+            presa = this.huntingStrategy.select(this, presas);
             setHungerStateAction();
         }
         return presa;
     }
     Animal buscarPareja(){
-         List<Animal> parejas = new ArrayList<>();
+        List<Animal> parejas = new ArrayList<>();
         Animal pareja = null;
         parejas = this.regionMngr.getAnimalsInRange(this, a -> a.getGeneticCode() == Wolf.this.getGeneticCode());
         if(!parejas.isEmpty()){
-            pareja =this.mateStrategy.select(this, parejas);
+            pareja = this.mateStrategy.select(this, parejas);
             setMateStateAction();
         }
         return pareja;
