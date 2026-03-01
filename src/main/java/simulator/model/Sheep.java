@@ -142,9 +142,9 @@ public class Sheep extends Animal{
                         this.baby = new Sheep(this, mateTarget);
                     }
                 }
-                else{
+                //else{
                     this.mateTarget = null;
-                }
+                //}
             }
         }
         if(this.dangerSource == null){
