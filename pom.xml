@@ -69,14 +69,15 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.5.1</version>
         <configuration>
-          <mainClass>simulator.launcher.Main</mainClass> <!-- para mvn exec:java -->
-          <arguments>
-            <!-- mueve argumentos fuera del comentario para que se usen
-                <argument>arg1</argument>
-                <argument>arg2</argument>
-            -->
-          </arguments>
-        </configuration>
+  <mainClass>simulator.launcher.Main</mainClass>
+
+  <!-- clave: incluir dependencias system (viewer.jar) -->
+  <includeProjectDependencies>true</includeProjectDependencies>
+  <includeSystemScope>true</includeSystemScope>
+
+  <!-- para que coja compile (donde cae viewer) -->
+  <classpathScope>compile</classpathScope>
+</configuration>
       </plugin>
     </plugins>
   </build>

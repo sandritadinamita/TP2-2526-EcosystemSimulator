@@ -122,13 +122,13 @@ public class Main {
     cmdLineOptions.addOption(Option.builder("o").longOpt("output").hasArg().desc("Output file, where output is written.").build());
 
     // steps
-    cmdLineOptions.addOption(Option.builder("t").longOpt("time").hasArg()
+    cmdLineOptions.addOption(Option.builder("dt").longOpt("delta-time").hasArg()
       .desc("A double representing actual time, in seconds, per simulation step. Default value: "
         + DEFAULT_DELTATIME + ".")
       .build());
 
-    cmdLineOptions.addOption(Option.builder("dt").longOpt("delta-time").hasArg()
-      .desc("A double representing actsimulation time in seconds. Default value: "
+    cmdLineOptions.addOption(Option.builder("t").longOpt("time").hasArg()
+      .desc("An real number representing the total simulation time in seconds. Default value: "
         + DEFAULT_TIME + ".")
       .build());
 
@@ -177,7 +177,7 @@ public class Main {
   private static void parseDeltaTimeOption(CommandLine line) throws ParseException {
     String dt = line.getOptionValue("dt", DEFAULT_DELTATIME.toString());
     try {
-      time = Double.parseDouble(dt);
+      deltaTime = Double.parseDouble(dt);
       assert (deltaTime >= 0);
     } catch (Exception e) {
       throw new ParseException("Invalid value for delta_time: " + dt);
@@ -217,7 +217,7 @@ public class Main {
     int h = inputData.getInt("height");
     int c = inputData.getInt("rows");
     int e = inputData.getInt("cols");
-    Simulator sim = new Simulator(w, h, c, e, animalsFactory, regionFactory);
+    Simulator sim = new Simulator(e, c, w, h, animalsFactory, regionFactory);
     Controller control = new Controller(sim);
     control.loadData(inputData);
     control.run(time, deltaTime, viewer, os);

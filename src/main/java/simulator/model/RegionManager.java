@@ -22,12 +22,16 @@ public class RegionManager implements AnimalMapView {
     private Region[][] regions;
 
     public RegionManager(int cols, int rows, int width, int height){
+        if (cols <= 0 || rows <= 0 || width <= 0 || height <= 0)
+            throw new IllegalArgumentException("Invalid map dimensions");
         this.cols = cols;
         this.rows = rows;
         this.mapWidth = width;
         this.mapHeight = height;
         this.regionWidth = width/cols;
         this.regionHeight = height/rows;
+        if (regionWidth <= 0 || regionHeight <= 0)
+            throw new IllegalStateException("Invalid region size");
         this.regions = new Region[rows][cols];
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < cols; j++){
@@ -43,15 +47,17 @@ public class RegionManager implements AnimalMapView {
             r.addAnimal(a);
             this.animalRegion.put(a, r);
         }
+        regions[row][col] = r;
     }
     void registerAnimal(Animal a){
+        if (a == null) throw new IllegalArgumentException("Animal is null");
+        a.init(this);
         Vector2D pos = a.getPosition();
         int row = (int) Math.floor(pos.getY()/mapHeight);
         int col = (int) Math.floor(pos.getX()/mapWidth);
         Region r = this.regions[row][col];
         r.addAnimal(a);
         this.animalRegion.put(a, r);
-        a.init(this);
     }
     void unregisterAnimal(Animal a){
         this.animalRegion.get(a).removeAnimal(a);
@@ -60,7 +66,7 @@ public class RegionManager implements AnimalMapView {
 
     void updateAnimalRegion(Animal a){
          Vector2D pos = a.getPosition();
-        int row = (int) Math.floor(pos.getY()/mapHeight);
+        int row = (int) Math.floor(pos.getY()/mapHeight); //cambio map -> region
         int col = (int) Math.floor(pos.getX()/mapWidth);
         Region r = this.regions[row][col];
         if(r != this.animalRegion.get(a)){
@@ -117,7 +123,7 @@ public class RegionManager implements AnimalMapView {
 				a.put(reg);
 			}
 		}
-		o.put("regiones",a);
+		o.put("regions", a);
 		
 		return o;
 	}
