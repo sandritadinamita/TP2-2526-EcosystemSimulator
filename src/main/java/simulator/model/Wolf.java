@@ -41,7 +41,7 @@ public class Wolf extends Animal{
             this.pos = ajustarPosicionDentroMapa(this.pos);
             setNormalStateAction();
         }
-        if(this.energy == 0.0 || this.age > 14.0){
+        if(this.energy == 0.0 || this.age > Constantes.MAX_AGE_WOLF){
             this.state = State.DEAD;
         }
         if(this.state != State.DEAD){ 
