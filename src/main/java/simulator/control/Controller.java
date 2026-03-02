@@ -34,7 +34,7 @@ public class Controller {
                     JSONObject spec = r.getJSONObject("spec");
                     for (int row = rf; row <= rt; row++) {
                         for (int col = cf; col <= ct; col++) {
-                            sim.setRegion(row, col, spec); //PREGUNTAR
+                            sim.setRegion(row, col, spec); 
                         }
                     }
                 }

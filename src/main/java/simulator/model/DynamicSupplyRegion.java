@@ -20,11 +20,10 @@ public class DynamicSupplyRegion extends DefaultRegion{
         else{
         int n = (int) this.getAnimals().stream().filter((e) -> e.getDiet() == Diet.HERBIVORE).count();
         double comida = 0;
-        comida = Math.min(food,Constantes.FOOD_EAT_RATE_HERBS*Math.exp(-Math.max(0,n-Constantes.FOOD_SHORTAGE_TH_HERBS)*Constantes.FOOD_SHORTAGE_EXP_HERBS)*dt);
+        comida = Math.min(food,Constantes.FOOD_EAT_RATE_HERBS*Math.exp(-Math.max(0, n-Constantes.FOOD_SHORTAGE_TH_HERBS)*Constantes.FOOD_SHORTAGE_EXP_HERBS)*dt);
         food -= comida;
         return comida;
         }
-
     }
 
 
