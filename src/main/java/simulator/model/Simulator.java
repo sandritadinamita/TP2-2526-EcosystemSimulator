@@ -62,7 +62,14 @@ public class Simulator implements JSONable {
                 animalesMuertos.add(a);
             }
         }
+         for(Animal a: animalesMuertos){
+            animals.remove(a);
+            this.regionMngr.unregisterAnimal(a);
+        }
+
         for(Animal a: this.animals){
+            a.update(dt);
+            this.regionMngr.updateAnimalRegion(a);
             if(a.isPregnant()){
                 Animal animalBaby = a.deliverBaby();
                 babies.add(animalBaby);
@@ -72,10 +79,10 @@ public class Simulator implements JSONable {
         for(Animal a: babies){
             addAnimal(a);
         }
-        for(Animal a: animalesMuertos){
-            animals.remove(a);
-            this.regionMngr.unregisterAnimal(a);
-        }
+        //for(Animal a: animalesMuertos){
+           // animals.remove(a);
+           // this.regionMngr.unregisterAnimal(a);
+        //}
         regionMngr.updateAllRegions(dt);
 
     }
