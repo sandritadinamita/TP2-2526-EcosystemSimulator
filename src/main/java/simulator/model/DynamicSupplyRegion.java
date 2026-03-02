@@ -14,7 +14,7 @@ public class DynamicSupplyRegion extends DefaultRegion{
     }
     @Override
     public double getFood(AnimalInfo a, double dt){
-        double comida = 0;
+        double comida = 0.0;
         comida = Math.min(food,super.getFood(a, dt));
         food -= comida;
         return comida;

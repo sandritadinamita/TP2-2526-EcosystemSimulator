@@ -14,7 +14,7 @@ public class DefaultRegion extends Region{
                     n++;
                 }
             }
-            return Constantes.FOOD_EAT_RATE_HERB*Math.exp(-Math.max(0, n-Constantes. FOOD_SHORTAGE_TH_HERB )*Constantes.FOOD_SHORTAGE_EXP_HERB)*dt;
+            return Constantes.FOOD_EAT_RATE_HERB*Math.exp(-Math.max(0, n-Constantes.FOOD_SHORTAGE_TH_HERB)*Constantes.FOOD_SHORTAGE_EXP_HERB)*dt;
             
         }
     }

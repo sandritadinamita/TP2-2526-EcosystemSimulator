@@ -53,7 +53,7 @@ public class RegionManager implements AnimalMapView {
         if (a == null) throw new IllegalArgumentException("Animal is null");
         a.init(this);
         Vector2D pos = a.getPosition();
-        int row = (int) Math.floor(pos.getY()/mapHeight);
+        int row = (int) Math.floor(pos.getY()/mapHeight); //1er cambio puede funcionar
         int col = (int) Math.floor(pos.getX()/mapWidth);
         Region r = this.regions[row][col];
         r.addAnimal(a);
@@ -66,7 +66,7 @@ public class RegionManager implements AnimalMapView {
 
     void updateAnimalRegion(Animal a){
         Vector2D pos = a.getPosition();
-        int row = (int) Math.floor(pos.getY()/mapHeight); 
+        int row = (int) Math.floor(pos.getY()/mapHeight); //2o cambio No funciona
         int col = (int) Math.floor(pos.getX()/mapWidth);
         Region r = this.regions[row][col];
         if(r != this.animalRegion.get(a)){
@@ -91,7 +91,7 @@ public class RegionManager implements AnimalMapView {
         double x = a.getPosition().getX();
         double y = a.getPosition().getY();
         double sRange = a.getSightRange();
-        int minRow = (int) Math.floor((y-sRange)/mapHeight);
+        int minRow = (int) Math.floor((y-sRange)/mapHeight); //3er cambio no funciona
         int maxRow = (int) Math.floor((y+sRange)/mapHeight);
         int minCol = (int) Math.floor((x-sRange)/mapWidth);
         int maxCol = (int) Math.floor((x+sRange)/mapWidth);
