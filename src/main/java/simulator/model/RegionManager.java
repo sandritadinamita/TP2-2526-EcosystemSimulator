@@ -162,4 +162,7 @@ public class RegionManager implements AnimalMapView {
 		return regionHeight;
 	}
 
+    Ahora implementa un iterador correspondiente en la clase RegionManager que recorra la matriz de regiones (por filas, de izquierda a derecha) 
+    para cada región devuelve una instancia correspondiente de RegionData.
+
 }

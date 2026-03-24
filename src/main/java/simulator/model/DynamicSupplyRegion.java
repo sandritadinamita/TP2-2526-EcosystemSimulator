@@ -33,4 +33,9 @@ public class DynamicSupplyRegion extends DefaultRegion{
             this.food += dt*this.factor;
         }
     }
+
+    public String toString(){
+        return "DynamicRegion";
+
+    }
 }

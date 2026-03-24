@@ -32,4 +32,7 @@ public abstract class Region implements Entity, FoodSupplier, RegionInfo{
         o.put("animals", animalsJSON);
         return o;
     }
+    public List<AnimalInfo> getAnimalsInfo() {
+        return new ArrayList<>(Collections.unmodifiableList(lista));
+    }
 }

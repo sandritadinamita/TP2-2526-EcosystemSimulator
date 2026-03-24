@@ -90,4 +90,10 @@ public class Simulator implements JSONable {
 		o.put("state", regionMngr.asJSON());
 		return o;
     }
+
+    public void reset(int cols, int rows, int width, int height){
+        this.tiempo = 0.0;
+        this.animals = new ArrayList<Animal>();
+        this.regionMngr = new RegionManager(cols, rows, width, height);
+    }
 }
