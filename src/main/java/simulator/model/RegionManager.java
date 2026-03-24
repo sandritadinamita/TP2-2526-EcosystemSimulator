@@ -49,13 +49,17 @@ public class RegionManager implements AnimalMapView {
         }
         regions[row][col] = r;
     }
+
+    private Region getRegionFromPosition(Vector2D pos){
+        int row = (int) Math.floor(pos.getY()/regionHeight);
+        int col = (int) Math.floor(pos.getX()/regionWidth);
+        return this.regions[row][col];
+    }
+
     void registerAnimal(Animal a){
         if (a == null) throw new IllegalArgumentException("Animal is null");
         a.init(this);
-        Vector2D pos = a.getPosition();
-        int row = (int) Math.floor(pos.getY()/mapHeight); 
-        int col = (int) Math.floor(pos.getX()/mapWidth);
-        Region r = this.regions[row][col];
+        Region r = getRegionFromPosition(a.getPosition());
         r.addAnimal(a);
         this.animalRegion.put(a, r);
     }
@@ -65,10 +69,7 @@ public class RegionManager implements AnimalMapView {
     }
 
     void updateAnimalRegion(Animal a){
-        Vector2D pos = a.getPosition();
-        int row = (int) Math.floor(pos.getY()/mapHeight); 
-        int col = (int) Math.floor(pos.getX()/mapWidth);
-        Region r = this.regions[row][col];
+        Region r = getRegionFromPosition(a.getPosition());
         if(r != this.animalRegion.get(a)){
             r.addAnimal(a);
             this.animalRegion.get(a).removeAnimal(a);
@@ -91,10 +92,10 @@ public class RegionManager implements AnimalMapView {
         double x = a.getPosition().getX();
         double y = a.getPosition().getY();
         double sRange = a.getSightRange();
-        int minRow = (int) Math.floor((y-sRange)/mapHeight); 
-        int maxRow = (int) Math.floor((y+sRange)/mapHeight);
-        int minCol = (int) Math.floor((x-sRange)/mapWidth);
-        int maxCol = (int) Math.floor((x+sRange)/mapWidth);
+        int minRow = (int) Math.floor((y-sRange)/regionHeight); 
+        int maxRow = (int) Math.floor((y+sRange)/regionHeight);
+        int minCol = (int) Math.floor((x-sRange)/regionWidth);
+        int maxCol = (int) Math.floor((x+sRange)/regionWidth);
         minCol = Math.max(0, minCol);
         minRow = Math.max(0, minRow);
         maxCol = Math.min(cols - 1, maxCol);
