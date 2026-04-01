@@ -2,6 +2,7 @@ package simulator.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -11,7 +12,7 @@ import org.json.JSONObject;
 
 import simulator.misc.Vector2D;
 
-public class RegionManager implements AnimalMapView { 
+public class RegionManager implements AnimalMapView{ 
     private int mapWidth;
     private int mapHeight;
     private int cols;
@@ -162,7 +163,31 @@ public class RegionManager implements AnimalMapView {
 		return regionHeight;
 	}
 
-    Ahora implementa un iterador correspondiente en la clase RegionManager que recorra la matriz de regiones (por filas, de izquierda a derecha) 
-    para cada región devuelve una instancia correspondiente de RegionData.
+    @Override
+    public Iterator<RegionData> iterator() {
+        return new Iterator<RegionData>(){
+        private int contCol = -1;
+		private int contRow = 0;
+
+            @Override
+            public boolean hasNext() {
+                if(contCol == cols - 1 && contRow < rows - 1) return true;
+				else if(contCol < cols - 1) return true;
+				else return false;
+            }
+
+            @Override
+            public RegionData next() {
+                contCol++;
+				if(contCol == cols) {
+					contCol = 0;
+					contRow++;
+				}
+				RegionData data = new RegionData(contRow, contCol, regions[contRow][contCol]);
+				return data;
+            }
+
+        };
+    }
 
 }
