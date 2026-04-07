@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import simulator.model.AnimalInfo;
+import simulator.model.EcoSysObserver;
 import simulator.model.MapInfo;
 import simulator.model.Simulator;
 import simulator.view.SimpleObjectViewer;
@@ -23,21 +24,7 @@ public class Controller {
         if(data != null){
             if(data.has("regions")){
                 JSONArray regiones = data.getJSONArray("regions");
-                for(int i = 0; i < regiones.length(); i++){
-                    JSONObject r = regiones.getJSONObject(i);
-                    JSONArray rowRange = r.getJSONArray("row"); 
-                    int rf = rowRange.getInt(0);
-                    int rt = rowRange.getInt(1);
-                    JSONArray colRange = r.getJSONArray("col"); 
-                    int cf = colRange.getInt(0);
-                    int ct = colRange.getInt(1);
-                    JSONObject spec = r.getJSONObject("spec");
-                    for (int row = rf; row <= rt; row++) {
-                        for (int col = cf; col <= ct; col++) {
-                            sim.setRegion(row, col, spec); 
-                        }
-                    }
-                }
+                loadRegions(regiones);
 
             }
             JSONArray animales = data.getJSONArray("animals");
@@ -53,6 +40,25 @@ public class Controller {
 
         else{
             throw new IllegalArgumentException("data is null");
+        }
+
+    }
+
+    public void loadRegions(JSONArray regiones){
+        for(int i = 0; i < regiones.length(); i++){
+            JSONObject r = regiones.getJSONObject(i);
+            JSONArray rowRange = r.getJSONArray("row"); 
+            int rf = rowRange.getInt(0);
+            int rt = rowRange.getInt(1);
+            JSONArray colRange = r.getJSONArray("col"); 
+            int cf = colRange.getInt(0);
+            int ct = colRange.getInt(1);
+            JSONObject spec = r.getJSONObject("spec");
+            for (int row = rf; row <= rt; row++) {
+                for (int col = cf; col <= ct; col++) {
+                    sim.setRegion(row, col, spec); 
+                }
+            }
         }
 
     }
@@ -87,4 +93,28 @@ public class Controller {
             ol.add(new ObjInfo(a.getGeneticCode(), (int) a.getPosition().getX(), (int) a.getPosition().getY(),(int)Math.round(a.getAge())+2));
         return ol;
     }
+    public void reset(int cols, int rows, int width, int height){
+        sim.reset(cols, rows, width, height);
+    }
+    public void setRegions(JSONObject rs){
+        if(rs !=null && rs.has("regions")){
+            JSONArray regiones = rs.getJSONArray("regions");
+            loadRegions(regiones);
+        }
+        else{
+            throw new IllegalArgumentException("data is null or contaions invalid data");
+        }
+
+    }
+    public void advance (double dt){
+        sim.advance(dt);
+    }
+    public void addObserver(EcoSysObserver o){
+        sim.addObserver(o);
+    }
+    
+    public void removeObserver(EcoSysObserver o){
+        sim.removeObserver(o);
+    }
+
 }

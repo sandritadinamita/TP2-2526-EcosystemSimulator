@@ -38,7 +38,7 @@ import simulator.model.Simulator;
 public class Main {
   public static Factory<SelectionStrategy> selectionStrategyFactory;
 	public static Factory<Animal> animalsFactory;
-	public static Factory<Region> regionFactory;
+	public static Factory<Region> regionFactory; // aqui no se si los que se tienen que poner en publico son estos y el delta time o alguno mas
 
 
   private enum ExecMode {
@@ -69,7 +69,7 @@ public class Main {
   // some attributes to stores values corresponding to command-line parameters
   //
   private static Double time = null;
-  private static Double deltaTime = null;
+  public static Double deltaTime = null;
   private static String inFile = null;
   private static String outFile = null;
   private static boolean viewer = false;
