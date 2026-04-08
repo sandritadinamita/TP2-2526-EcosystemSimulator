@@ -26,10 +26,11 @@ class ControlPanel extends JPanel {
     initGUI();
   }
 
+
   private void initGUI() {
     setLayout(new BorderLayout());
-    toolaBar = new JToolBar();
-    add(toolaBar, BorderLayout.PAGE_START);
+    toolBar = new JToolBar();
+    add(toolBar, BorderLayout.PAGE_START);
 
     // TODO crear los diferentes botones/atributos y añadirlos a la toolBar.
     //      Todos ellos han de tener su correspondiente tooltip. Puedes utilizar
@@ -37,14 +38,14 @@ class ControlPanel extends JPanel {
     //      entre las componentes que lo necesiten.
 
     // Quit Button
-    this.toolaBar.add(Box.createGlue()); // this aligns the button to the right
-    this.toolaBar.addSeparator();
+    this.toolBar.add(Box.createGlue()); // this aligns the button to the right
+    this.toolBar.addSeparator();
     this.quitButton = new JButton();
     this.quitButton.setToolTipText("Quit");
     // TODO cargar la imagen como un recurso usando el ClassLoader y NO usando una ruta absoluta o relativa
     this.quitButton.setIcon(new ImageIcon("..."));
     this.quitButton.addActionListener((e) -> ViewUtils.quit(this));
-    this.toolaBar.add(quitButton);
+    this.toolBar.add(quitButton);
 
     // TODO Inicializar this.fc con una instancia de JFileChooser. Para que siempre
     // abre en la carpeta de ejemplos puedes usar:
