@@ -20,6 +20,8 @@ public class MainWindow extends JFrame {
     initGUI();
   }
 
+  
+
   private void initGUI() {
     JPanel mainPanel = new JPanel(new BorderLayout());
     setContentPane(mainPanel);
@@ -36,14 +38,14 @@ public class MainWindow extends JFrame {
 
     // TODO crear la tabla de especies y añadirla a contentPanel.
     //      Usa setPreferredSize(new Dimension(500, 250)) para fijar su tamaño
-    JPanel speciesTable = new InfoTable("Species", new SpeciesTableModel(ctrl));
+    JPanel speciesTable = new InfoTable("Species", new SpeciesTableModel(this.ctrl));
     speciesTable.setPreferredSize(new Dimension(500, 250));
     contentPanel.add(speciesTable);
 
 
     // TODO crear la tabla de regiones.
     //      Usa setPreferredSize(new Dimension(500, 250)) para fijar su tamaño
-    JPanel regionsTable = new InfoTable("Regions", new RegionsTableModel(ctrl));
+    JPanel regionsTable = new InfoTable("Regions", new RegionsTableModel(this.ctrl));
     regionsTable.setPreferredSize(new Dimension(500, 250));
     contentPanel.add(regionsTable);
 

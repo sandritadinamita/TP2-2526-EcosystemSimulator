@@ -1,6 +1,10 @@
 package simulator.view;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -9,15 +13,27 @@ import simulator.model.AnimalInfo;
 import simulator.model.EcoSysObserver;
 import simulator.model.MapInfo;
 import simulator.model.RegionInfo;
+import simulator.model.State;
 
 class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
-
+  
+  private Map<String, SortedMap<State,Integer>> data;
+	private List<String> cols;
+	private final Controller ctrl;
   // TODO definir atributos necesarios
 
   SpeciesTableModel(Controller ctrl) {
     // TODO inicializar estructuras de datos correspondientes
     // TODO registrar this como observador
-  }
+		this.ctrl = ctrl;
+		data = new HashMap<>();
+		cols = new ArrayList<>();
+		cols.add("Species");
+		for(State s: State.values()) {
+			cols.add(s.toString());
+		}
+		ctrl.addObserver(this);
+	}
   // TODO el resto de métodos van aquí …
 
   @Override

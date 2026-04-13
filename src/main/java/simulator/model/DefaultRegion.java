@@ -1,6 +1,5 @@
 package simulator.model;
 
-
 public class DefaultRegion extends Region{ 
     public double getFood(AnimalInfo a, double dt){
         if(a.getDiet() == Diet.CARNIVORE){
