@@ -1,10 +1,14 @@
 package simulator.view;
 
-import java.lang.ModuleLayer.Controller;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import simulator.control.Controller;
 
 public class MainWindow extends JFrame {
 
@@ -32,12 +36,24 @@ public class MainWindow extends JFrame {
 
     // TODO crear la tabla de especies y añadirla a contentPanel.
     //      Usa setPreferredSize(new Dimension(500, 250)) para fijar su tamaño
+    JPanel speciesTable = new InfoTable("Species", new SpeciesTableModel(ctrl));
+    speciesTable.setPreferredSize(new Dimension(500, 250));
+    contentPanel.add(speciesTable);
+
 
     // TODO crear la tabla de regiones.
     //      Usa setPreferredSize(new Dimension(500, 250)) para fijar su tamaño
+    JPanel regionsTable = new InfoTable("Regions", new RegionsTableModel(ctrl));
+    regionsTable.setPreferredSize(new Dimension(500, 250));
+    contentPanel.add(regionsTable);
 
     // TODO llama a ViewUtils.quit(MainWindow.this) en el método windowClosing
-    addWindowListener(...);
+    addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowClosing(WindowEvent e) {
+          ViewUtils.quit(MainWindow.this);
+      }
+    });
 
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     pack();
