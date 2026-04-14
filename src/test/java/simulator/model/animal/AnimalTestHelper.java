@@ -1,6 +1,7 @@
 package simulator.model.animal;
 
 import simulator.misc.Vector2D;
+import simulator.model.Animal;
 import simulator.model.strategy.SelectionStrategy;
 
 /**
