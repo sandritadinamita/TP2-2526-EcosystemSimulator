@@ -1,11 +1,14 @@
 package simulator.view;
 
+import java.awt.Dimension;
+import java.awt.Frame;
 import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
 import org.json.JSONObject;
