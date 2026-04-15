@@ -206,3 +206,4 @@ void actdesactButtons(boolean action) {
   this.viewButton.setEnabled(action);
   this.changeRegionsButton.setEnabled(action);
 }
+}
