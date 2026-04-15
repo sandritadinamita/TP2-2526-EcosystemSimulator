@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
+import java.util.TreeMap;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -16,9 +17,8 @@ import simulator.model.RegionInfo;
 import simulator.model.State;
 
 class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
-  
-  private Map<String, SortedMap<State,Integer>> data;
-	private List<String> cols;
+  private Map<String, SortedMap<State,Integer>> info; // ej. (sheep: {hunger:5, dead:1})
+	private List<String> colsEstados;
 	private final Controller ctrl;
   // TODO definir atributos necesarios
 
@@ -26,11 +26,11 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
     // TODO inicializar estructuras de datos correspondientes
     // TODO registrar this como observador
 		this.ctrl = ctrl;
-		data = new HashMap<>();
-		cols = new ArrayList<>();
-		cols.add("Species");
+		info = new HashMap<>();
+		colsEstados = new ArrayList<>();
+		colsEstados.add("Species");
 		for(State s: State.values()) {
-			cols.add(s.toString());
+			colsEstados.add(s.toString());
 		}
 		ctrl.addObserver(this);
 	}
@@ -38,49 +38,74 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
   @Override
   public int getRowCount() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getRowCount'");
+    return info.size();
   }
 
   @Override
   public int getColumnCount() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getColumnCount'");
+    return colsEstados.size();
   }
 
   @Override
   public Object getValueAt(int rowIndex, int columnIndex) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getValueAt'");
+    List<String> keys = new ArrayList<>(info.keySet()); 
+		String key = keys.get(rowIndex);
+		List<Integer> values = new ArrayList<>(info.get(key).values()); 
+		if(columnIndex == 0){
+      return key;
+    }
+		else{
+      return values.get(columnIndex - 1);
+    } 
   }
 
   @Override
   public void onRegister(double time, MapInfo map, List<AnimalInfo> animals) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'onRegister'");
+    info = new HashMap<>();
+		for(AnimalInfo a : animals) {
+			addAnimal(a);
+		}
   }
 
   @Override
   public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'onReset'");
+    info = new HashMap<>();
   }
 
   @Override
   public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals, AnimalInfo a) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'onAnimalAdded'");
+    addAnimal(a);
   }
 
   @Override
-  public void onRegionSet(int row, int col, MapInfo map, RegionInfo r) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'onRegionSet'");
-  }
+  public void onRegionSet(int row, int col, MapInfo map, RegionInfo r) {}
 
   @Override
-  public void onAdvance(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'onAdvance'");
+  public void onAdvance(double time, MapInfo map, List<AnimalInfo> animals, double dt) { //en cada paso la tabla cambia, tiene que actualizarse
+    info = new HashMap<>();
+		for(AnimalInfo a : animals) {
+			addAnimal(a);
+		}
   }
+
+  private void addAnimal(AnimalInfo a) {
+		String key = a.getGeneticCode();
+		if(info.containsKey(key)) {
+			State estado = a.getState();
+			Integer valor = info.get(key).get(estado);
+			 info.get(key).put(estado, valor + 1);
+		}
+		else {
+			SortedMap<State, Integer> nuevaInfo = new TreeMap<>();
+			for(State estado : State.values()) {
+				if(estado.equals(a.getState())) {
+					nuevaInfo.put(estado, 1);
+				}
+				else nuevaInfo.put(estado, 0);
+			}
+			info.put(key, nuevaInfo);
+		}
+		this.fireTableDataChanged();
+		this.fireTableStructureChanged();
+	}
 }
