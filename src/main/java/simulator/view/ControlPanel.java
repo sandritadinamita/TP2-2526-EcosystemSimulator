@@ -12,9 +12,14 @@ import javax.swing.JToolBar;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 import simulator.control.Controller;
 import simulator.launcher.Main;
@@ -49,7 +54,7 @@ class ControlPanel extends JPanel {
     toolBar = new JToolBar();
     add(toolBar, BorderLayout.PAGE_START);
 
-    // TODO crear los diferentes botones/atributos y añadirlos a la toolBar.
+    // TODO crear los diferentes botones/atributos y añadirlos a la toolBar. (hecho)
     //      Todos ellos han de tener su correspondiente tooltip. Puedes utilizar
     //      this.toolaBar.addSeparator() para añadir la línea de separación vertical
     //      entre las componentes que lo necesiten.
@@ -58,7 +63,7 @@ class ControlPanel extends JPanel {
     this.openButton = new JButton();
     this.openButton.setToolTipText("OpenFile");
     // TODO cargar la imagen como un recurso usando el ClassLoader y NO usando una ruta absoluta o relativa
-    this.openButton.setIcon(new ImageIcon("..."));
+    this.openButton.setIcon(new ImageIcon(ClassLoader.getSystemResource("iconos/open.png")));
     this.openButton.addActionListener((e) -> openFileAction());
     this.toolBar.add(openButton);
 
@@ -67,7 +72,7 @@ class ControlPanel extends JPanel {
     this.viewButton = new JButton();
     this.viewButton.setToolTipText("View");
     // TODO cargar la imagen como un recurso usando el ClassLoader y NO usando una ruta absoluta o relativa
-    this.viewButton.setIcon(new ImageIcon("..."));
+    this.viewButton.setIcon(new ImageIcon(ClassLoader.getSystemResource("iconos/viewer.png")));
     this.viewButton.addActionListener((e) -> mapViewAction());
     this.toolBar.add(viewButton);
 
@@ -75,7 +80,7 @@ class ControlPanel extends JPanel {
     this.changeRegionsButton= new JButton();
     this.changeRegionsButton.setToolTipText("Change Regions");
     // TODO cargar la imagen como un recurso usando el ClassLoader y NO usando una ruta absoluta o relativa
-    this.changeRegionsButton.setIcon(new ImageIcon("..."));
+    this.changeRegionsButton.setIcon(new ImageIcon((ClassLoader.getSystemResource("iconos/regions.png"))));
     this.changeRegionsButton.addActionListener((e) -> changeRegionsAction());
     this.toolBar.add(changeRegionsButton);
 
@@ -83,16 +88,15 @@ class ControlPanel extends JPanel {
     this.toolBar.addSeparator();
     this.runButton= new JButton();
     this.runButton.setToolTipText("Run");
-    // TODO cargar la imagen como un recurso usando el ClassLoader y NO usando una ruta absoluta o relativa
-    this.runButton.setIcon(new ImageIcon("..."));
+    getClass().getClassLoader();
+    this.runButton.setIcon(new ImageIcon(ClassLoader.getSystemResource("iconos/run.png")));
     this.runButton.addActionListener((e) -> runAction());
     this.toolBar.add(runButton);
 
     //stop button
     this.stopButton= new JButton();
     this.stopButton.setToolTipText("Stop");
-    // TODO cargar la imagen como un recurso usando el ClassLoader y NO usando una ruta absoluta o relativa
-    this.stopButton.setIcon(new ImageIcon("..."));
+    this.stopButton.setIcon(new ImageIcon(ClassLoader.getSystemResource("iconos/stop.png")));
     this.stopButton.addActionListener((e) -> stopAction());
     this.toolBar.add(stopButton);
 
@@ -120,28 +124,37 @@ class ControlPanel extends JPanel {
     this.toolBar.addSeparator();
     this.quitButton = new JButton();
     this.quitButton.setToolTipText("Quit");
-    // TODO cargar la imagen como un recurso usando el ClassLoader y NO usando una ruta absoluta o relativa
-    this.quitButton.setIcon(new ImageIcon("..."));
+    this.quitButton.setIcon(new ImageIcon(ClassLoader.getSystemResource("iconos/exit.png")));
     this.quitButton.addActionListener((e) -> ViewUtils.quit(this));
     this.toolBar.add(quitButton);
 
     // TODO Inicializar this.fc con una instancia de JFileChooser. Para que siempre
     // abre en la carpeta de ejemplos puedes usar:
-    //
+    // (hecho)
     fc = new JFileChooser();
     this.fc.setCurrentDirectory(new File(System.getProperty("user.dir") + "/resources/examples"));
 
     // TODO Inicializar this.changeRegionsDialog con instancias del diálogo de cambio
-    // de regiones
+    // de regiones (hecho)
     this.changeRegionsDialog = new ChangeRegionsDialog(this.ctrl);
 
   }
-  // el resto de métodos van aquí…
+  // el resto de métodos van aquí… hecho
 
   private void openFileAction() {
-    // TODO mostrar el JFileChooser (this.fc) y cargar el fichero seleccionado usando this.ctrl.load(file)
-   int file = this.fc.showOpenDialog(ViewUtils.getWindow(this));
-   // completar
+   int result = this.fc.showOpenDialog(ViewUtils.getWindow(this));
+    if (result == JFileChooser.APPROVE_OPTION) {
+      File file = this.fc.getSelectedFile();
+      try {
+        InputStream is = new FileInputStream(file);
+        JSONObject json = new JSONObject(new JSONTokener(is));
+        ctrl.reset(json.getInt("cols"), json.getInt("rows"), json.getInt("width"), json.getInt("height"));
+        this.ctrl.loadData(json);
+        
+      } catch (Exception e) {
+        ViewUtils.showErrorMsg(e.getMessage());
+      }
+    }
   
   }
 
