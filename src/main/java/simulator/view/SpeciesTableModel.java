@@ -48,16 +48,20 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 
   @Override
   public Object getValueAt(int rowIndex, int columnIndex) {
-    List<String> keys = new ArrayList<>(info.keySet()); 
-		String key = keys.get(rowIndex);
-		List<Integer> values = new ArrayList<>(info.get(key).values()); 
-		if(columnIndex == 0){
-      return key;
-    }
-		else{
-      return values.get(columnIndex - 1);
+    List<String> keys = new ArrayList<>(info.keySet());
+    String key = keys.get(rowIndex);
+    if (columnIndex == 0) {
+        return key;
     } 
+    else {
+        State estado = State.values()[columnIndex - 1];
+        return info.get(key).get(estado);
+    }
   }
+
+  public String getColumnName(int col) {
+		return colsEstados.get(col);
+	}
 
   @Override
   public void onRegister(double time, MapInfo map, List<AnimalInfo> animals) {
