@@ -221,7 +221,7 @@ public class Main {
   }
 
 
-  private static void start_batch_mode() throws Exception {
+  private static void startBatchMode() throws Exception {
     InputStream is = new FileInputStream(new File(inFile));
     OutputStream os = new FileOutputStream(new File(outFile));
     JSONObject inputData = loadJSONFile(is);
@@ -236,7 +236,7 @@ public class Main {
     os.close();
   }
 
-  private static void start_GUI_mode() throws Exception {
+  private static void startGUIMode() throws Exception {
     Controller ctrl;
     if(inFile != null){
       InputStream is = new FileInputStream(new File(inFile));
@@ -261,10 +261,10 @@ public class Main {
     parseArgs(args);
     switch (mode) {
       case BATCH:
-        start_batch_mode();
+        startBatchMode();
         break;
       case GUI:
-        start_GUI_mode();
+        startGUIMode();
         break;
     }
   }
