@@ -11,7 +11,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -122,7 +121,8 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 		regionChooserText.setText("Region type: ");
     JComboBox<String> regionsComboBox = new JComboBox<>(this.regionsModel);
     regionsComboBox.setSelectedIndex(0);
-    regionsComboBox.addActionListener(e -> updateRegionDataTable(regionsComboBox)); //cuando cambia la selección se refreca la tabla
+    regionsComboBox.addActionListener(e -> updateRegionDataTable(regionsComboBox)); //cuando cambia la selección se refresca la tabla
+    updateRegionDataTable(regionsComboBox);
     comboboxPanel.add(regionChooserText);
     comboboxPanel.add(regionsComboBox);
 
@@ -161,57 +161,50 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
       setVisible(false);
 		});
 
-    //REVISAR
     okButton.addActionListener((e) -> {
-            String type = regionsInfo.get(regionsComboBox.getSelectedIndex()).getString("type"); //COJO EL TIPO
-            JSONObject region = new JSONObject();
+      try {
+          int rowFrom = Integer.parseInt((String) fromRowCombo.getSelectedItem());
+          int rowTo = Integer.parseInt((String) toRowCombo.getSelectedItem());
+          int colFrom = Integer.parseInt((String) fromColCombo.getSelectedItem());
+          int colTo = Integer.parseInt((String) toColCombo.getSelectedItem());
+          
+          if (rowFrom > rowTo || colFrom > colTo) {
+            ViewUtils.showErrorMsg("Rango inválido");
+            return;
+          }
 
-            JSONArray row = new JSONArray();
-            JSONArray col = new JSONArray();
-            
-            row.put(fromRowCombo.getSelectedIndex());//INICIO RANGO ROW
-            row.put(toRowCombo.getSelectedIndex());//FIN RANGO ROW
-            
-            col.put(fromColCombo.getSelectedIndex());//INICIO RANGO col
-            col.put(toColCombo.getSelectedIndex());//FIN RANGO col
-            
-            if(fromRowCombo.getSelectedIndex() > toRowCombo.getSelectedIndex()){
-            	ViewUtils.showErrorMsg("Rango inválido");
-            	return;
-            }
-            if(fromColCombo.getSelectedIndex() > toColCombo.getSelectedIndex()){
-            	ViewUtils.showErrorMsg("Rango inválido");
-            	return;
-            }
-            
-	        region.put("row", row);
-	        region.put("col", col);
+          String type = regionsInfo.get(regionsComboBox.getSelectedIndex()).getString("type");
 
-	        JSONObject spec = new JSONObject();
+          JSONObject data = new JSONObject();
+          for (int fila = 0; fila < dataTableModel.getRowCount(); fila++) {
+              String key = (String) dataTableModel.getValueAt(fila, 0);
+              Object value = dataTableModel.getValueAt(fila, 1); //la tabla guarda objetos
 
-	        // INSERTAMOS TIPO
-	        spec.put("type", type);
+              if (value != null && !value.toString().trim().isEmpty()) {
+                  data.put(key, value);
+              }
+          }
 
-	        JSONObject data = new JSONObject();
-	        String k;
-	        Object v;
+          JSONObject spec = new JSONObject();
+          spec.put("type", type);
+          spec.put("data", data);
 
-	        for (int fila = 0; fila < dataTableModel.getRowCount(); fila++) { //FILAS DE TABLA CHANGEREGIONS (VALUE)
-	            k = (String) dataTableModel.getValueAt(fila, 0);
-	            v = dataTableModel.getValueAt(fila, 1);
-	            data.put(k, v);
-	        }
+          JSONObject region = new JSONObject();
+          region.put("row", new JSONArray().put(rowFrom).put(rowTo));
+          region.put("col", new JSONArray().put(colFrom).put(colTo));
+          region.put("spec", spec);
 
-	        spec.put("data", data);
-	        region.put("spec", spec);
+          JSONObject regiones = new JSONObject();
+          regiones.put("regions", new JSONArray().put(region));
 
-	        JSONObject regiones = new JSONObject();
-	        JSONArray arrayRegiones = new JSONArray();
-	        arrayRegiones.put(region);
-	        regiones.put("regions",arrayRegiones);
-	        ctrl.setRegions(regiones);
-	        dispose();
-		});
+          ctrl.setRegions(regiones);
+          status = 1;
+          setVisible(false);
+
+      } catch (Exception ex) {
+          ViewUtils.showErrorMsg(ex.getMessage());
+      }
+    });
 
     buttonsPanel.add(okButton);
     buttonsPanel.add(cancelButton);
@@ -232,33 +225,22 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 
   @Override
   public void onRegister(double time, MapInfo map, List<AnimalInfo> animals) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'onRegister'");
+    metodoAux(map);
   }
 
   @Override
   public void onReset(double time, MapInfo map, List<AnimalInfo> animals) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'onReset'");
+    metodoAux(map);
   }
 
   @Override
-  public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals, AnimalInfo a) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'onAnimalAdded'");
-  }
+  public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals, AnimalInfo a) {}
 
   @Override
-  public void onRegionSet(int row, int col, MapInfo map, RegionInfo r) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'onRegionSet'");
-  }
+  public void onRegionSet(int row, int col, MapInfo map, RegionInfo r) {}
 
   @Override
-  public void onAdvance(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'onAdvance'");
-  }
+  public void onAdvance(double time, MapInfo map, List<AnimalInfo> animals, double dt) {}
 
   // TODO el resto de métodos van aquí…
   public void updateRegionDataTable(JComboBox<String> regionsComboBox){
@@ -277,5 +259,21 @@ public class ChangeRegionsDialog extends JDialog implements EcoSysObserver {
 			}
 		}
 
+  }
+
+  public void metodoAux(MapInfo map){
+    fromRowModel.removeAllElements();
+    toRowModel.removeAllElements();
+    fromColModel.removeAllElements();
+    toColModel.removeAllElements();
+
+    for (int i = 0; i < map.getRows(); i++) {
+        fromRowModel.addElement("" + i);
+        toRowModel.addElement("" + i);
+    }
+    for (int j = 0; j < map.getCols(); j++) {
+        fromColModel.addElement("" + j);
+        toColModel.addElement("" + j);
+    }
   }
 }

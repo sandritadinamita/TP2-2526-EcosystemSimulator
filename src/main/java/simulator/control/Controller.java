@@ -93,11 +93,13 @@ public class Controller {
             ol.add(new ObjInfo(a.getGeneticCode(), (int) a.getPosition().getX(), (int) a.getPosition().getY(),(int)Math.round(a.getAge())+2));
         return ol;
     }
+
     public void reset(int cols, int rows, int width, int height){
         sim.reset(cols, rows, width, height);
     }
+
     public void setRegions(JSONObject rs){
-        if(rs !=null && rs.has("regions")){
+        if(rs != null && rs.has("regions")){
             JSONArray regiones = rs.getJSONArray("regions");
             loadRegions(regiones);
         }
@@ -106,13 +108,15 @@ public class Controller {
         }
 
     }
+
     public void advance (double dt){
         sim.advance(dt);
     }
+
     public void addObserver(EcoSysObserver o){
         sim.addObserver(o);
     }
-    
+
     public void removeObserver(EcoSysObserver o){
         sim.removeObserver(o);
     }
