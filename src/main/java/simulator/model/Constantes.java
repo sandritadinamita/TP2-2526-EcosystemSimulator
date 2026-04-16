@@ -53,6 +53,12 @@ public class Constantes {
     final static double FACTOR = 2.0;
     final static double FOOD_GROWTH_PROBABILITY = 0.5;
 
+    //valores por defecto para el simulador
+    public final static int DEFAULT_WIDTH = 800;// ns si esto se puede
+    public final static int DEFAULT_HEIGHT = 600;
+    public final static int DEFAULT_ROWS = 15;
+    public final static int DEFAULT_COLS = 20;
+
 
 
 

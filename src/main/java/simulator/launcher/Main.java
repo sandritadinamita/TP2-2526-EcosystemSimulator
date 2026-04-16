@@ -8,6 +8,8 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -31,9 +33,11 @@ import simulator.factories.SheepBuilder;
 import simulator.factories.WolfBuilder;
 import simulator.misc.Utils;
 import simulator.model.Animal;
+import simulator.model.Constantes;
 import simulator.model.Region;
 import simulator.model.SelectionStrategy;
 import simulator.model.Simulator;
+import simulator.view.MainWindow;
 
 public class Main {
   public static Factory<SelectionStrategy> selectionStrategyFactory;
@@ -93,6 +97,7 @@ public class Main {
       parseTimeOption(line);
       parseDeltaTimeOption(line);
       parseSimViewerOption(line, cmdLineOptions);
+      parseModeOption(line);
 
       // if there are some remaining arguments, then something wrong is
       // provided in the command line!
@@ -184,6 +189,12 @@ public class Main {
       throw new ParseException("Invalid value for delta_time: " + dt);
     }
   }
+  private static void parseModeOption(CommandLine line) throws ParseException {
+    String m = line.getOptionValue("m", "gui");
+    if ( m == "batch") {
+      mode = ExecMode.BATCH;
+    }
+  }
 
   private static void initFactories() {
     //estrategias
@@ -226,7 +237,23 @@ public class Main {
   }
 
   private static void start_GUI_mode() throws Exception {
-    throw new UnsupportedOperationException("GUI mode is not ready yet ...");
+    Controller ctrl;
+    if(inFile != null){
+      InputStream is = new FileInputStream(new File(inFile));
+      JSONObject inputData = loadJSONFile(is);
+      int w = inputData.getInt("width");
+      int h = inputData.getInt("height");
+      int c = inputData.getInt("rows");
+      int e = inputData.getInt("cols");
+      Simulator sim = new Simulator(e, c, w, h, animalsFactory, regionFactory);
+      ctrl = new Controller(sim);
+      ctrl.loadData(inputData);
+    }
+    else{
+      Simulator sim = new Simulator(Constantes.DEFAULT_WIDTH, Constantes.DEFAULT_HEIGHT, Constantes.DEFAULT_ROWS, Constantes.DEFAULT_COLS, animalsFactory, regionFactory);
+      ctrl = new Controller(sim);
+    }
+    SwingUtilities.invokeAndWait(() -> new MainWindow(ctrl));
   }
 
   private static void start(String[] args) throws Exception {
