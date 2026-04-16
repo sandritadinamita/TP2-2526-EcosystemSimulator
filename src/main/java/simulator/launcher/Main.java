@@ -78,7 +78,9 @@ public class Main {
   private static String outFile = null;
   private static boolean viewer = false;
 
-  private static ExecMode mode = ExecMode.BATCH;
+  //private static ExecMode mode = ExecMode.BATCH;
+  private static ExecMode mode = ExecMode.GUI;
+
 
   private static void parseArgs(String[] args) {
 
@@ -92,12 +94,12 @@ public class Main {
     try {
       CommandLine line = parser.parse(cmdLineOptions, args);
       parseHelpOption(line, cmdLineOptions);
+      parseModeOption(line);
       parseInFileOption(line);
       parseOutFileOption(line);
       parseTimeOption(line);
       parseDeltaTimeOption(line);
       parseSimViewerOption(line, cmdLineOptions);
-      parseModeOption(line);
 
       // if there are some remaining arguments, then something wrong is
       // provided in the command line!
@@ -125,6 +127,7 @@ public class Main {
 
     // input file
     cmdLineOptions.addOption(Option.builder("i").longOpt("input").hasArg().desc("A configuration file.").build());
+    cmdLineOptions.addOption(Option.builder("m").longOpt("mode").hasArg().desc("Execution Mode. Possible values: 'batch' (Batch mode), 'gui' (Graphical User Interface mode). Default value: 'gui'.").build());
     cmdLineOptions.addOption(Option.builder("o").longOpt("output").hasArg().desc("Output file, where output is written.").build());
 
     // steps
@@ -189,9 +192,10 @@ public class Main {
       throw new ParseException("Invalid value for delta_time: " + dt);
     }
   }
+
   private static void parseModeOption(CommandLine line) throws ParseException {
     String m = line.getOptionValue("m", "gui");
-    if ( m == "batch") {
+    if (m.equals("batch")) {
       mode = ExecMode.BATCH;
     }
   }
