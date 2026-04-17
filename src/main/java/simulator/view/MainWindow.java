@@ -30,6 +30,8 @@ public class MainWindow extends JFrame {
     ControlPanel controlPanel = new ControlPanel(ctrl);
     mainPanel.add(controlPanel, BorderLayout.PAGE_START);
     // TODO crear StatusBar y añadirlo en PAGE_END de mainPanel
+    StatusBar statusBar = new StatusBar(ctrl);
+    mainPanel.add(statusBar, BorderLayout.PAGE_END);
 
     // Definición del panel de tablas (usa un BoxLayout vertical)
     JPanel contentPanel = new JPanel();
