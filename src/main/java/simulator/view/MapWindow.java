@@ -35,7 +35,7 @@ class MapWindow extends JFrame implements EcoSysObserver {
     // TODO poner contentPane como mainPanel (hecho)
     this.setContentPane(mainPanel);
     // TODO crear el viewer y añadirlo a mainPanel (en el centro)(hecho)
-    MapViewer viewer = new MapViewer();
+    this.viewer = new MapViewer();
     mainPanel.add(viewer, BorderLayout.CENTER);
     // TODO en el método windowClosing, eliminar ‘MapWindow.this’ de los
     //      observadores(hecho)
