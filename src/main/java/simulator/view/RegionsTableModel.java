@@ -19,7 +19,7 @@ import simulator.model.RegionInfo;
 class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
 
   // TODO definir atributos necesarios
-  private SortedMap<RegionData, Map<Diet, Integer>> info; 
+  private Map<RegionData, Map<Diet, Integer>> info; 
 	private List<String> cols;
 	private final Controller ctrl;
 
@@ -27,7 +27,7 @@ class RegionsTableModel extends AbstractTableModel implements EcoSysObserver {
     // TODO inicializar estructuras de datos correspondientes
     // TODO registrar this como observador
     this.ctrl = ctrl;
-		info = new TreeMap<>();
+		info = new HashMap<>();
 		cols = new ArrayList<>();
 		cols.add("Row");
     cols.add("Col");

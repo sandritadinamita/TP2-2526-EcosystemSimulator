@@ -159,7 +159,7 @@ class ControlPanel extends JPanel {
   }
 
   private void mapViewAction() {
-    new MapWindow(ViewUtils.getWindow(this) , ctrl);
+    new MapWindow(ViewUtils.getWindow(this), ctrl);
   }
   private void changeRegionsAction() {
   this.changeRegionsDialog.open(ViewUtils.getWindow(this));
