@@ -1,6 +1,5 @@
 package simulator.view;
 
-import simulator.model.Animal;
 import simulator.model.AnimalInfo;
 import simulator.model.MapInfo;
 

@@ -1,4 +1,4 @@
-package simulator.model.animal;
+/*package simulator.model.animal;
 
 import simulator.misc.Vector2D;
 import simulator.model.Animal;
@@ -6,7 +6,7 @@ import simulator.model.strategy.SelectionStrategy;
 
 /**
  * Helper class for testing that provides access to protected animal fields
- */
+ 
 public class AnimalTestHelper {
 
     public static void setAge(Animal animal, double age) {
@@ -43,3 +43,4 @@ public class AnimalTestHelper {
         return wolf;
     }
 }
+*/

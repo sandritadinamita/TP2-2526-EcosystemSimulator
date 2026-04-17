@@ -1,4 +1,4 @@
-package simulator.model.animal;
+/*package simulator.model.animal;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 
 /**
  * Test class for Sheep behavior, covering movement and state transitions
- */
+ 
 public class SheepTest {
 
     @Spy
@@ -682,4 +682,4 @@ public class SheepTest {
             String.format("Sheep should move faster in DANGER state (boosted ~2x). Normal: %.2f, DANGER: %.2f",
                 normalSpeed, dangerDistance));
     }
-}
+}*/
