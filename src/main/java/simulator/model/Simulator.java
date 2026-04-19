@@ -62,7 +62,7 @@ public class Simulator implements JSONable, Observable<EcoSysObserver> {
         for (Animal a: this.animals){
             a.update(dt);
             this.regionMngr.updateAnimalRegion(a);
-            if(a.getState() == State.DEAD){
+            if(a.getState() == Animal.State.DEAD){
                 animalesMuertos.add(a);
             }
         }

@@ -14,10 +14,10 @@ import simulator.model.AnimalInfo;
 import simulator.model.EcoSysObserver;
 import simulator.model.MapInfo;
 import simulator.model.RegionInfo;
-import simulator.model.State;
+import simulator.model.Animal;
 
 class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
-  private Map<String, SortedMap<State,Integer>> info; // ej. (sheep: {hunger:5, dead:1})
+  private Map<String, SortedMap<Animal.State,Integer>> info; // ej. (sheep: {hunger:5, dead:1})
 	private List<String> colsEstados;
 	private final Controller ctrl;
   // TODO definir atributos necesarios
@@ -29,7 +29,7 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
 		info = new HashMap<>();
 		colsEstados = new ArrayList<>();
 		colsEstados.add("Species");
-		for(State s: State.values()) {
+		for(Animal.State s: Animal.State.values()) {
 			colsEstados.add(s.toString());
 		}
 		ctrl.addObserver(this);
@@ -54,7 +54,7 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
         return key;
     } 
     else {
-        State estado = State.values()[columnIndex - 1];
+        Animal.State estado = Animal.State.values()[columnIndex - 1];
         return info.get(key).get(estado);
     }
   }
@@ -95,13 +95,13 @@ class SpeciesTableModel extends AbstractTableModel implements EcoSysObserver {
   private void addAnimal(AnimalInfo a) {
 		String key = a.getGeneticCode();
 		if(info.containsKey(key)) {
-			State estado = a.getState();
+			Animal.State estado = a.getState();
 			Integer valor = info.get(key).get(estado);
 			 info.get(key).put(estado, valor + 1);
 		}
 		else {
-			SortedMap<State, Integer> nuevaInfo = new TreeMap<>();
-			for(State estado : State.values()) {
+			SortedMap<Animal.State, Integer> nuevaInfo = new TreeMap<>();
+			for(Animal.State estado : Animal.State.values()) {
 				if(estado.equals(a.getState())) {
 					nuevaInfo.put(estado, 1);
 				}

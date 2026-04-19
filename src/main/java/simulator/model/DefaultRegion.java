@@ -2,14 +2,14 @@ package simulator.model;
 
 public class DefaultRegion extends Region{ 
     public double getFood(AnimalInfo a, double dt){
-        if(a.getDiet() == Diet.CARNIVORE){
+        if(a.getDiet() == Animal.Diet.CARNIVORE){
             return 0.0;
         }
         else{
             int n = 0;
             for (Animal animal : this.lista) { 
-                if (animal.getDiet() == Diet.HERBIVORE &&
-                    animal.getState() != State.DEAD) {
+                if (animal.getDiet() == Animal.Diet.HERBIVORE &&
+                    animal.getState() != Animal.State.DEAD) {
                     n++;
                 }
             }

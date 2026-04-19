@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import simulator.model.State; //habria que meterlo en Animal
+import simulator.model.Animal; //habria que meterlo en Animal
 
 /*
  * An incomplete version of  the map viewer, to be completed by students.
@@ -54,7 +54,7 @@ public class MapViewer extends AbstractMapViewer {
 	// are: null and the values returned by Animal.State.values(). If it is null we
 	// show all animals.
 	//
-	State currentState;
+	Animal.State currentState;
 	
 
 	// En estos atributos guardamos la lista de animales y el tiempo que hemos
@@ -121,16 +121,16 @@ public class MapViewer extends AbstractMapViewer {
 					//      these values comes null.
 					//
 					if (currentState == null) {
-						currentState = State.values()[0];
+						currentState = Animal.State.values()[0];
 					} else {
 						int i = 0;
-						while (i < State.values().length && State.values()[i] != currentState) {
+						while (i < Animal.State.values().length && Animal.State.values()[i] != currentState) {
 							i++;
 						}
-						if (i == State.values().length - 1) {
+						if (i == Animal.State.values().length - 1) {
 							currentState = null;
 						} else {
-							currentState = State.values()[i + 1];
+							currentState = Animal.State.values()[i + 1];
 						}
 					}
 					

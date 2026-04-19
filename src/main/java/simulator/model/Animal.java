@@ -24,6 +24,15 @@ public abstract class Animal implements Entity, AnimalInfo{
     protected AnimalMapView regionMngr;
     protected SelectionStrategy mateStrategy;
 
+
+    public enum Diet {
+		HERBIVORE, CARNIVORE;
+	}
+	public enum State {
+		NORMAL, MATE, HUNGER, DANGER, DEAD;
+	}
+
+
     protected Animal(String geneticCode, Diet diet, double sightRange, double initSpeed, SelectionStrategy mateStrategy, Vector2D pos){
         if (geneticCode == null|| geneticCode.isBlank())
 			throw new IllegalArgumentException("geneticCode no puede ser nulo");
