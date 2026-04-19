@@ -1,5 +1,6 @@
 package simulator.view;
 
+import simulator.model.Animal;
 import simulator.model.AnimalInfo;
 import simulator.model.MapInfo;
 
@@ -54,6 +55,7 @@ public class MapViewer extends AbstractMapViewer {
 	// show all animals.
 	//
 	State currentState;
+	
 
 	// En estos atributos guardamos la lista de animales y el tiempo que hemos
 	// recibido la última vez para dibujarlos.
@@ -101,7 +103,7 @@ public class MapViewer extends AbstractMapViewer {
 	}
 
 	private void initGUI() {
-
+		/*initStates();*/
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -131,6 +133,8 @@ public class MapViewer extends AbstractMapViewer {
 							currentState = State.values()[i + 1];
 						}
 					}
+					
+
 					repaint();
 					break;
 				default:
@@ -164,6 +168,8 @@ public class MapViewer extends AbstractMapViewer {
 		//
 		showHelp = true;
 	}
+	
+
 
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -299,7 +305,8 @@ public class MapViewer extends AbstractMapViewer {
 		//
 		//      Draw the tag of the visible state, using currState.toString(), if it is not null.
 		if (currentState != null) {
-			drawStringWithRect(g, 10, height - 40, "State: " + currentState.toString());
+			//drawStringWithRect(g, 10, height - 40, "State: " + currentState.toString());
+			drawStringWithRect(g, 10, getHeight() - 40, "State: " + currentState.toString());
 		}
 
 
@@ -308,7 +315,7 @@ public class MapViewer extends AbstractMapViewer {
 		//
 		//      Draw the time. To use only 3 decimals you can use String.format("%.3f", time).
 		g.setColor(Color.MAGENTA);
-		drawStringWithRect(g, 10, height - 20, "Time: " + String.format("%.3f", time));
+		drawStringWithRect(g, 10, getHeight() - 20, "Time: " + String.format("%.3f", time));
 
 
 		// TODO Dibujar la información de todas la especies. Al final de la iteración
