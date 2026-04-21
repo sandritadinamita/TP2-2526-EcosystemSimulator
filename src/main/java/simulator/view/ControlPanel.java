@@ -176,34 +176,33 @@ class ControlPanel extends JPanel {
   }
 
   private void runSim(int n, double dt) {
-  if (n > 0 && !this.stopped) {
-    try {
-          this.ctrl.advance(dt);
-          SwingUtilities.invokeLater(() -> runSim(n - 1, dt));
-    } catch (Exception e) {
-      // TODO llamar a ViewUtils.showErrorMsg con el mensaje de error
-      //      que corresponda
-        ViewUtils.showErrorMsg(e.getMessage());
-        // TODO activar todos los botones
-        actdesactButtons(true);
-        this.stopButton.setEnabled(true); 
-        this.stopped = true;
+    if (n > 0 && !this.stopped) {
+      try {
+            this.ctrl.advance(dt);
+            SwingUtilities.invokeLater(() -> runSim(n - 1, dt));
+      } catch (Exception e) {
+        // TODO llamar a ViewUtils.showErrorMsg con el mensaje de error
+        //      que corresponda
+          ViewUtils.showErrorMsg(e.getMessage());
+          // TODO activar todos los botones
+          actdesactButtons(true);
+          this.stopButton.setEnabled(true); 
+          this.stopped = true;
+      }
+    } 
+    else {
       // TODO activar todos los botones
       actdesactButtons(true);
       this.stopButton.setEnabled(true); 
       this.stopped = true;
     }
-  } else {
-    // TODO activar todos los botones
-    actdesactButtons(true);
-    this.stopButton.setEnabled(true); 
-    this.stopped = true;
   }
-}
-void actdesactButtons(boolean action) {
-  this.runButton.setEnabled(action);
-  this.openButton.setEnabled(action);
-  this.viewButton.setEnabled(action);
-  this.changeRegionsButton.setEnabled(action);
-}
+
+  void actdesactButtons(boolean action) {
+    this.runButton.setEnabled(action);
+    this.openButton.setEnabled(action);
+    this.viewButton.setEnabled(action);
+    this.changeRegionsButton.setEnabled(action);
+  }
+
 }

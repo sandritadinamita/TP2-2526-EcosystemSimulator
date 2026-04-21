@@ -24,7 +24,7 @@ class StatusBar extends JPanel implements EcoSysObserver {
   private int width;
 
 
-  StatusBar(Controller ctrl) { // mirar que controller hay q importar xq yo siempre importo el del control pero ns si es
+  StatusBar(Controller ctrl) { 
     initGUI();
     ctrl.addObserver(this);
   }
