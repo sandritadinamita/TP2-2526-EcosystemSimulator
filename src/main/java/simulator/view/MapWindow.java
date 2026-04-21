@@ -82,7 +82,7 @@ class MapWindow extends JFrame implements EcoSysObserver {
 
   @Override
   public void onRegister(double time, MapInfo map, List<AnimalInfo> animals) {
-    SwingUtilities.invokeLater(() -> { this.viewer.reset(time, map, animals); pack(); });
+    SwingUtilities.invokeLater(() -> { this.viewer.reset(time, map, animals); pack(); }); //invokeLater() interfaces swing
   }
 
   @Override
@@ -91,13 +91,10 @@ class MapWindow extends JFrame implements EcoSysObserver {
   }
 
   @Override
-  public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals, AnimalInfo a) {
-  }
+  public void onAnimalAdded(double time, MapInfo map, List<AnimalInfo> animals, AnimalInfo a) {}
 
   @Override
-  public void onRegionSet(int row, int col, MapInfo map, RegionInfo r) {
-
-  }
+  public void onRegionSet(int row, int col, MapInfo map, RegionInfo r) {}
 
   @Override
   public void onAdvance(double time, MapInfo map, List<AnimalInfo> animals, double dt) {
